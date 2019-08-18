@@ -1,0 +1,91 @@
+<template>
+  <v-container fill-height>
+    <v-layout fill-height>
+      <v-flex   col-12 col-xl-3 col-md-5 col-sm-8 mx-auto my-auto>
+        <v-card>
+          <v-overlay
+            absolute
+            :value="!!status.processingRegistration">
+            <v-progress-circular id="overlay" indeterminate size="50" color="primary"></v-progress-circular>
+          </v-overlay>
+          </v-progress-circular>
+          <v-card-text class="text-left">
+            <h1 class="greeting mt-2 mb-4 ">Nowe konto</h1>
+            <div class="d-flex">
+              <v-form ref="form" v-model="valid" :lazy-validation="true" class="flex-grow-1">
+                <v-text-field
+                  v-model="username"
+                  label="Nazwa użytkownika"
+                  :rules="[requiredRule,usernameRule]"></v-text-field>
+                <v-text-field
+                  v-model="email"
+                  label="E-mail"
+                  :rules="[requiredRule,emailRule]"></v-text-field>
+                <v-text-field
+                  v-model="password"
+                  label="Hasło"
+                  :append-icon="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                  @click:append="showPassword = !showPassword"
+                  :type="showPassword ? 'text' : 'password'"
+                  :rules="[requiredRule]">
+                </v-text-field>
+                <v-text-field
+                  v-model="passwordRepeated"
+                  label="Powtórz hasło"
+                  :append-icon="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                  @click:append="showPassword = !showPassword"
+                  :type="showPassword ? 'text' : 'password'"
+                  :rules="[requiredRule,passwordRule]">
+                </v-text-field>
+              </v-form>
+              <v-card-actions class="flex-shrink-1 d-none d-md-flex ml-3">
+                <v-btn @click="validate" fab x-large color="success" typeof="submit">
+                  <v-icon>
+                    fas fa-chevron-right
+                  </v-icon></v-btn>
+              </v-card-actions>
+            </div>
+            <v-card-actions class="d-block px-0">
+              <v-btn @click="validate" class="d-md-none d-block secondary">Zaloguj się</v-btn>
+              <small class="d-block mt-2">Nie masz jeszcze konta? <router-link to="/register">Zaloguj się</router-link></small>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+  import {mapState} from 'vuex'
+
+export default {
+  name: 'Register',
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      passwordRepeated: '',
+      showPassword: false,
+      valid: false,
+      requiredRule: value => !!value || 'Pole wymagane',
+      usernameRule: value => value.length>5 || 'Zbyt krótka nazwa użytkownika',
+      passwordRule: value => (value==this.password && this.password==this.passwordRepeated) || 'Podane hasła różnią się',
+      emailRule: value => /.+@.+\..+/.test(value) || 'Niepoprawny e-mail',
+    };
+  },
+  computed: {
+    ...mapState('user', ['status']),
+  },
+  methods: {
+    validate() {
+      if (this.$refs.form.validate()) this.$store.dispatch('user/register', { username: this.username, email: this.email, password: this.password });
+    },
+  },
+};
+</script>
+
+<style scoped>
+
+</style>

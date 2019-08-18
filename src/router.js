@@ -1,23 +1,92 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from './store/store.js';
 import Home from './views/Home.vue';
+import About from './views/About.vue';
+import PermissionDenied from './views/PermissionDenied.vue';
+import UnknownPage from './views/UnknownPage.vue';
+import Login from './views/Login.vue';
+import Register from './views/Register.vue';
+import UserDashboard from './views/UserDashboard.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const router=new Router({
   routes: [
     {
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        public: true,
+        }
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      component: About,
+      meta: {
+        public: false,
+      }
     },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        public: true,
+      }
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register,
+      meta: {
+        public: true,
+      }
+    },
+    {
+      path: '/user-dashboard',
+      name: 'UserDashboard',
+      component: UserDashboard,
+      meta: {
+        public: false,
+      }
+    },
+    {
+      path: '/permissionDenied',
+      name: 'denied',
+      component: PermissionDenied,
+      meta: {
+        public: true,
+      }
+    },
+    {
+      path: '*',
+      name: 'unknownPage',
+      component: UnknownPage,
+      meta: {
+        public: true,
+      }
+    }
   ],
 });
+router.beforeEach((to, from, next) => {
+   if (to.matched.some(record => !record.meta.public)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.state.user.status.loggedIn) {
+      next({
+        path: '/login',
+        //query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+
+  } else {
+    next() // make sure to always call next()!
+  }
+});
+
+export default router;
