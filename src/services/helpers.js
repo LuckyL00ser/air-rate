@@ -16,10 +16,10 @@ function measuresToString(sensors) {
     if (sensor.measures.length) { // checks if sensor has ANY measures
       string += `<b> ${sensorType[sensor.name].name}: </b>`; // maps english names to polish
       if (isPMSensor(sensor)) { // for dust pollution return also color as norm indicator
-        string += `<span class="${unifyValueAndGetColor(sensor.name, sensor.measures[0].value)}--text">  
-                        ${sensor.measures[0].value}${sensorType[sensor.name].unit}</span><br>`;
+        string += `<span class="${unifyValueAndGetColor(sensor.name, sensor.measures[sensor.measures.length-1].value)}--text">  
+                        ${sensor.measures[sensor.measures.length-1].value}${sensorType[sensor.name].unit}</span><br>`;
       } else { // for ordinary measures like temperature, humidity, pressure
-        string += `${sensor.measures[0].value}${sensorType[sensor.name].unit}<br>`;
+        string += `${sensor.measures[sensor.measures.length-1].value}${sensorType[sensor.name].unit}<br>`;
       }
     }
   });
@@ -28,9 +28,12 @@ function measuresToString(sensors) {
 /*
 Generates html tags and content for map popup
  */
+function localDate(date){
+  return new Date(date).toLocaleString('pl-PL');
+}
 function createMeasurePopup(device) {
   return `<div class="measure-popup">
-              <b>Aktualny pomiar:</b><br>
+              <b>Aktualny pomiar:</b> <br> ${device.sensors.length? localDate(device.sensors[0].measures[device.sensors[0].measures.length-1].created_at): 'brak'}<br>
               <b>Miasto:</b> ${device.city}<br>
               <b>Czujnik: </b>${device.name}<br>
               ${measuresToString(device.sensors)}
@@ -99,7 +102,7 @@ function getCircleColorFromPollution(device) {
   if (pollutions.length === 0) { return 'white'; }
 
   // gets normalized value of pollutions
-  pollutions = pollutions.map(element => unifyValue(element.name, element.measures[0].value));
+  pollutions = pollutions.map(element => unifyValue(element.name, element.measures[element.measures.length - 1].value));
   // return color of the highest pollition
   return getColorFromPollution(Math.max(...pollutions));
 }

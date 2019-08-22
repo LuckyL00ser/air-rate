@@ -1,6 +1,8 @@
 <template>
-
-    <v-app-bar app id="bar">
+    <div>
+      <v-app-bar app id="bar" >
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
+        <v-spacer class="hidden-md-and-up"></v-spacer>
         <router-link  to="/" class="mx-auto" id="bar-container">
           <img src="../assets/logo.png" alt="logo"/>
           <v-toolbar-title class="headline">
@@ -8,123 +10,145 @@
             <span class="font-weight-light ">Rate</span>
           </v-toolbar-title>
         </router-link>
-      <span id="list" class="mx-10" >
+        <span id="list" class="mx-10 d-none d-md-inline" >
         <router-link tag="a" to="/products">Produkty</router-link>
         <router-link tag="a" to="/about">O nas</router-link>
         <router-link tag="a" to="/rules">Regulamin</router-link>
       </span >
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-
-      <span v-if="status.loggedIn">
-        <router-link class="mr-2"  to="/user-dashboard">
-        <v-icon>
+        <div class="d-none d-md-inline">
+        <span v-if="status.loggedIn">
+        <v-btn outlined color="primary" class="mr-2"  to="/user-dashboard">
+          Panel użytkownika
+        <v-icon class="ml-1">
           fas fa-user-circle
         </v-icon>
-      </router-link>
+      </v-btn>
 
-        <a @click="$store.dispatch('user/logout')" >
-        <v-icon>
+        <v-btn outlined color="accent" @click="$store.dispatch('user/logout')" >
+          Wyloguj
+        <v-icon class="ml-1">
         fas fa-sign-out-alt
         </v-icon>
-      </a>
+      </v-btn>
       </span>
-      <span v-else>
-        <router-link to="/register">
+          <span v-else>
+        <v-btn outlined color="primary" class="mx-2" to="/register">
           Rejestracja
-      </router-link> |
-        <router-link to="/login">
+          <v-icon class="ml-1">
+            far fa-edit
+          </v-icon>
+      </v-btn>
+        <v-btn outlined color="secondary" to="/login">
           Logowanie
-      </router-link>
+          <v-icon class="ml-1">
+            fas fa-sign-in-alt
+          </v-icon>
+      </v-btn>
       </span>
+        </div>
+      </v-app-bar>
+      <v-navigation-drawer v-model="drawer" app  temporary class="pa-3">
+          <template v-slot:prepend>
+            <div class="drawer-prepend text-left">
+              <img src="../assets/logo.png" alt="logo" class="navigation-image"/>
+              <span v-if="status.loggedIn" class="vertical-align">{{userData.username}}</span>
+              <span v-else>AirRate</span>
+            </div>
+            <v-divider></v-divider>
+          </template>
+        <v-list class="text-left" >
+          <v-list-item-group color="primary">
+            <v-list-item v-for="element in nav" :key="element.name" @click="$router.push({path: element.to})" >
+              <v-list-item-icon>
+                <v-icon class="mr-2">
+                  {{element.icon}}
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                {{element.name}}
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item v-if="status.loggedIn" @click="$router.push({path: 'user-dashboard'})">
+              <v-list-item-icon>
+                <v-icon class="mr-2">
+                  fas fa-user-circle
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                Panel użytkownika
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
 
-    </v-app-bar >
+
+        </v-list>
+
+
+        <template v-slot:append >
+          <v-btn v-if="status.loggedIn" class="col-12 accent" @click="$store.dispatch('user/logout')">
+            Wyloguj się
+          </v-btn>
+          <div v-else>
+            <v-btn class="primary col-12 my-2" to="/login">
+              Zaloguj się
+            </v-btn>
+            <v-btn class="secondary col-12" to="/register">
+              Rejestracja
+            </v-btn>
+          </div>
+        </template>
+      </v-navigation-drawer>
+    </div>
+
 
 </template>
 
 <script>
-/*
-TODO:: menu zwykle
-<v-toolbar-side-icon @click="drawer=true" class="hidden-lg-and-up"></v-toolbar-side-icon> TODO:: hamburger
-...
-<v-spacer class="hidden-md-and-down"></v-spacer>
-<v-toolbar-items class="hidden-md-and-down">
-  <v-btn flat>
-    <router-link to="/">
-      Mapa zanieczyszczeń
-    </router-link>
-  </v-btn>
-  <v-btn flat>
-    <router-link to="/about">
-      Nasza misja
-    </router-link>
-  </v-btn>
-</v-toolbar-items>
 
-TODO:: menu mobilne - wsadzic po </toolbar>
-<v-navigation-drawer
-  v-model="drawer"
-  absolute
-  temporary
->
-  <v-list class="pa-1">
-    <v-list-tile avatar>
-      <v-list-tile-avatar>
-        <img src="../assets/AirRate_ico.png">
-      </v-list-tile-avatar>
-
-      <v-list-tile-content>
-        <v-list-tile-title>AirRate</v-list-tile-title>
-      </v-list-tile-content>
-
-    </v-list-tile>
-  </v-list>
-
-  <v-list class="pt-0" >
-    <v-divider></v-divider>
-
-    <v-list-tile to="/">
-      <v-list-tile-action>
-        <v-icon>
-          fas fa-map
-        </v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>Mapa zanieczyszczeń</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile to="/about">
-      <v-list-tile-action>
-        <v-icon>
-          fas fa-map
-        </v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title to="/about">Nasza misja</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
-  </v-list>
-</v-navigation-drawer>
-
-*/
 import {mapState} from 'vuex';
 export default {
   name: 'Navbar',
   data() {
     return {
       drawer: false,
-      collapseOnScroll: true,
+      nav: [
+        {
+          name: 'Mapa zanieczyszczeń',
+          icon: 'fas fa-map-marked-alt',
+          to: '/'
+        },
+        {
+          name: 'Produkty',
+          icon: 'fas fa-shopping-cart',
+          to: '/products'
+        },
+        {
+          name: 'O nas',
+          icon: 'fas fa-info-circle',
+          to: '/about'
+        },
+        {
+          name: 'Regulamin',
+          icon: 'far fa-file-alt',
+          to: '/rules'
+        },
+
+      ]
 
     };
   },
   computed: {
-    ...mapState('user',['status','user'])
+    ...mapState('user',['status','userData'])
   }
 };
 </script>
 
 <style scoped>
-
+  .navigation-image{
+    height: 50px;
+  }
   #list{
     list-style-type: none;
 
@@ -137,7 +161,7 @@ export default {
   #bar-container, img{
     height: 100%;
   }
-  #bar-container >*{
+  #bar-container >*,.drawer-prepend>*{
     display: inline-block;
     vertical-align: middle;
   }

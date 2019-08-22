@@ -30,14 +30,32 @@ export default {
     sensors(newData){
       this.showData(newData);
     },
-    daily(newData){
+    daily(dailyChart){
 
+      if(this.jsChart){
+        this.jsChart.options.scales.xAxes = [{
+          type: 'time',
+          scaleLabel: {
+            display: true,
+            labelString: dailyChart?'Dzień':'Godzina',
+          },
+          stacked: true,
+          time: {
+            unit: dailyChart? 'day' : 'minute',
+            unitStepSize: dailyChart? 1 : 60,
+            displayFormats:{
+              minute: dailyChart? 'DD-MM': 'hh:mm'
+            },
+            tooltipFormat: 'YYYY-MM-DD, kk:mm'    //cosider adding 'ddd' at beggining - check moment.js lib localization options
+          },
+        }],
+        this.jsChart.update();
+      }
     },
   },
   beforeDestroy(){
     if(this.jsChart)
       this.jsChart.destroy();
-
   },
   mounted(){
     const matchedType = helpers.sensorType[this.sensors[0].name];
@@ -74,12 +92,13 @@ export default {
       }
     },
     updateData(sensors){
-      console.log('update');
+
       this.jsChart.data.labels = charts.pick(sensors[0].measures, 'created_at');
         for( let i =0; i<sensors.length;i++)  //loop for grouped PM sensors
           this.jsChart.data.datasets[i].data = charts.pick(sensors[i].measures, 'value');
         this.jsChart.update();
     },
+
 
   },
 

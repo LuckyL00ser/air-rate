@@ -16,7 +16,7 @@
 <!--              </v-card-text>-->
 <!--        </v-card>-->
 <!--    </v-layout>-->
-    <v-layout class=" col-12 pa-0 relative" >
+    <v-layout class=" col-12 pa-0 relative overflow-hidden" >
 
           <map-sidebar ref="sidebar" class="pa-3 ">
             <map-charts ref="charts"
@@ -36,7 +36,7 @@
               </template>
             </map-charts>
           </map-sidebar>
-        <Map @showDeviceCharts="showDeviceCharts" :fetchDataFunction="getCurrentMeasures"  :devices="$store.state.measures.current"/>
+        <Map @showDeviceCharts="showDeviceCharts" :fetchDataFunction="getCurrentMeasures"  :devices="$store.state.measures.current" class="home-map"/>
     </v-layout>
 
   </v-container>
@@ -94,7 +94,9 @@ export default {
   .h-100vh{
     height: 100vh;
   }
-
+  .home-map{
+    min-height: 80vh;
+  }
   .fixed{
     position: fixed !important;
     top:0;

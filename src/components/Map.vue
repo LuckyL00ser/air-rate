@@ -22,9 +22,9 @@ export default {
     };
   },
   watch: {
-    devices(){
+    devices() {
       this.showMeasures();
-    }
+    },
   },
   beforeDestroy() {
     if (this.mapInstance) {
@@ -34,7 +34,8 @@ export default {
   },
   methods: {
     createMap() {
-      this.mapInstance = L.map('map-container').setView([50.0340021, 22.00450923], 13);
+      console.log(L.Browser)
+      this.mapInstance = L.map('map-container', { dragging: !L.Browser.mobile }).setView([50.0340021, 22.00450923], 13);
       L.tileLayer(process.env.VUE_APP_MAPS_TILES_URL,
         {
           attribution: 'Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -44,12 +45,13 @@ export default {
         }).addTo(this.mapInstance);
       this.circlesLayer = L.layerGroup();
       this.circlesLayer.addTo(this.mapInstance);
-    },    centerOn(lat,lang){
-      this.mapInstance.setView([lat,lang], 13);
+    },
+    centerOn(lat, lang) {
+      this.mapInstance.setView([lat, lang], 13);
     },
     refreshMeasures() {
       if (this.fetchDataFunction) {
-          this.fetchDataFunction();
+        this.fetchDataFunction();
       }
     },
     addRegion(device) {
@@ -64,7 +66,7 @@ export default {
       circle.bindPopup(helpers.createMeasurePopup(device));
       circle.on('click', () => {
         this.$emit('showDeviceCharts', device);
-        this.mapInstance.setView([device.latitude+0.01, device.longitude+0.06], 13);
+        this.mapInstance.setView([device.latitude+0.015  , device.longitude ], 13);
       }); // centers map view on clicked point
     },
     showMeasures() {

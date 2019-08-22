@@ -10,8 +10,8 @@
       <div v-for="sensor in selectedDevice.sensors" :key="sensor.name" class="mb-2" style="width:100%">
                       <span v-if="sensor.measures.length" class="mr-3" >
                         {{sensorTypeInfo[sensor.name].name}}:
-                        <span :class="sensorColor(sensor.name, sensor.measures[0].value)+'--text'">
-                          {{sensor.measures[0].value}} {{sensorTypeInfo[sensor.name].unit}}
+                        <span :class="sensorColor(sensor.name, sensor.measures[sensor.measures.length-1].value)+'--text'">
+                          {{sensor.measures[sensor.measures.length-1].value}} {{sensorTypeInfo[sensor.name].unit}}
                         </span>
                        </span>
         <v-tooltip top>
@@ -45,7 +45,7 @@
       lastMeasure(){
         if(this.selectedDevice && this.selectedDevice.sensors && this.selectedDevice.sensors.length)
         {
-          const tmp = new Date(this.selectedDevice.sensors[0].measures[0].created_at);
+          const tmp = new Date(this.selectedDevice.sensors[0].measures[this.selectedDevice.sensors[0].measures.length-1].created_at);
           return `${tmp.toLocaleTimeString('pl-PL')}/ ${tmp.toLocaleDateString('pl-PL')}`;
         }
         return 'brak';

@@ -1,17 +1,19 @@
 <template>
   <v-footer class="elevation-5 white pb-0 px-0 flex-column" app absolute id="footer">
-    <div class="py-1">
-      <img src="@/assets/logo.png" class="d-inline-block vertical-middle"/>
-      <div :hidden="$vuetify.breakpoint.mdAndDown" class=" d-inline-block vertical-middle">
-        Nasza misja to walka o czyste i przyjazne środowisko.
+    <div class="d-none d-md-block py-0">
+      <div class="py-1 mx-12">
+        <img src="@/assets/logo.png" class="d-inline-block vertical-middle"/>
+        <div class="d-inline-block vertical-middle">
+          Nasza misja to walka o czyste i przyjazne środowisko.
+
+        </div>
 
       </div>
 
+        <v-divider class="w-100 py-1 "></v-divider>
+
     </div>
-    <div class="col-12 col-lg-10 col-xl-7">
-      <v-divider class="w-100 py-0"></v-divider>
-    </div>
-    <div class="d-flex col-12 col-lg-10 col-xl-7 justify-center flex-wrap">
+    <div class="d-flex col-12 col-lg-10 col-xl-7 mt-2 mt-md-0 justify-center flex-wrap">
       <div class="col-12 col-md-4 pa-0 pa-lg-3 d-flex justify-center">
         <div>
           <p class="font-weight-bold text--secondary">Kontakt</p>

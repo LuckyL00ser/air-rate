@@ -59,9 +59,9 @@
         <device-current-card  class="col-lg-3  col-md-6 col-12 " :selected-device="selectedDevice" />
       </v-flex>
 
-      <v-flex col-12>
+      <v-flex col-12 v-if="this.selectedDevice">
 
-          <div >
+          <div>
             <h2>Pomiary zagregowane:</h2>
             <v-switch v-model="daily" class="d-inline-block" label="Dniowe" ></v-switch>
 

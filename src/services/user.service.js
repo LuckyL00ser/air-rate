@@ -1,12 +1,13 @@
 import axios from '../axios.config.js';
 
+
+
+
 // local storage manipulations
 function setAuthorizationToken(token) {
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Token ${token}`;
     axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
-   // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-
     localStorage.setItem('token', JSON.stringify(token));
   }
 }
