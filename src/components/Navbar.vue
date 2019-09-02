@@ -165,5 +165,8 @@ export default {
     display: inline-block;
     vertical-align: middle;
   }
+  #bar{
+    z-index: 2000;
+  }
 
 </style>

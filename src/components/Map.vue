@@ -3,7 +3,6 @@
    <div id="map-container" ></div>
  </div>
 
-
 </template>
 
 <script>

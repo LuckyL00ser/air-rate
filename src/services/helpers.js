@@ -1,10 +1,10 @@
 const sensorType = {
-  PM1: { name: 'PM1', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie' },
-  'PM2.5': { name: 'PM2.5', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie' },
-  PM10: { name: 'PM10', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie' },
-  Temperature: { name: 'Temperatura', unit: '°C', type: 'temperature' },
-  Humidity: { name: 'Wilgotność ', unit: '%', type: 'humidity' },
-  Pressure: { name: 'Ciśnienie', unit: 'hPa', type: 'pressure' },
+  PM1: { name: 'PM1', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '' },
+  'PM2.5': { name: 'PM2.5', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '' },
+  PM10: { name: 'PM10', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '' },
+  Temperature: { name: 'Temperatura', unit: '°C', type: 'temperature', icon: 'fas fa-thermometer-half' },
+  Humidity: { name: 'Wilgotność ', unit: '%', type: 'humidity', icon: 'fas fa-tint' },
+  Pressure: { name: 'Ciśnienie', unit: 'hPa', type: 'pressure', icon: 'fas fa-tachometer-alt' },
 };
 function isPMSensor(sensor) {
   return sensor.name.match(/PM+/gi);

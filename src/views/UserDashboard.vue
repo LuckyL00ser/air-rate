@@ -52,12 +52,15 @@
       <v-flex fill-heigth col>
         <v-card class="fill-height flex-grow-1">
           <!--          <map-sidebar :devices="mapFilteredDevices" dark/>-->
+          <map-sidebar ref="sidebar" class="pa-3 ">
+            <device-current-card  :selected-device="selectedDevice" />
+          </map-sidebar>
           <Map @showDeviceCharts="loadDeviceData" :fetchDataFunction="getUserCurrent" :devices="mapDevices" ref="map" />
         </v-card>
       </v-flex>
-      <v-flex col-lg-3 col-md-6 col-12 v-if="selectedDevice">
-        <device-current-card  class="col-lg-3  col-md-6 col-12 " :selected-device="selectedDevice" />
-      </v-flex>
+<!--      <v-flex col-lg-3 col-md-6 col-12 v-if="selectedDevice">-->
+<!--        <device-current-card  :selected-device="selectedDevice" />-->
+<!--      </v-flex>-->
 
       <v-flex col-12 v-if="this.selectedDevice">
 
@@ -84,11 +87,12 @@ import Map from '../components/Map.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
 import DeviceCurrentCard from '../components/DeviceCurrentCard';
 import ChartsDisplayContainer from '../components/ChartsDisplayContainer';
+import MapSidebar  from '../components/MapSidebar';
 
 export default {
   name: 'UserDashboard',
   components: {
-    ChartsDisplayContainer, Map, LoadingOverlay, MapCharts, DeviceCurrentCard,
+    ChartsDisplayContainer, Map, LoadingOverlay, MapCharts, DeviceCurrentCard, MapSidebar
   },
   data() {
     return {
@@ -129,6 +133,7 @@ export default {
       if (mapDevice) {
         this.selectedDevice = mapDevice;
         this.$refs.map.centerOn(mapDevice.latitude, mapDevice.longitude);
+        this.$refs.sidebar.open();
       //  this.$refs.charts.fetchAndShowData(mapDevice);
           await this.getUserHourly(mapDevice.device_id);
         await this.getUserDaily(mapDevice.device_id);

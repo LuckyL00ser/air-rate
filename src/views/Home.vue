@@ -26,11 +26,7 @@
                         :data-hourly="hourly? hourly.sensors: []">
               <template v-slot:header="slotProps">
                 <v-card-title >
-                  <h1>{{slotProps.selectedDevice.city}} - </h1>
-                  <h1 class="secondary--text"> {{slotProps.selectedDevice.name}}</h1>
-                  <v-btn fab small absolute  right color="primary" @click="$refs.sidebar.close()">
-                    <v-icon> fas fa-times-circle</v-icon>
-                  </v-btn>
+                  <device-current-card :selected-device="slotProps.selectedDevice" class="col-12"/>
                 </v-card-title>
 
               </template>
@@ -50,10 +46,12 @@ import Map from '../components/Map.vue';
 import MapCharts from '../components/MapCharts.vue';
 import MapSidebar from '../components/MapSidebar';
 import {mapActions, mapState} from 'vuex';
+import DeviceCurrentCard from '../components/DeviceCurrentCard';
 
 export default {
   name: 'home',
   components: {
+    DeviceCurrentCard,
     Map,
     MapCharts,
     MapSidebar

@@ -1,5 +1,5 @@
 <template>
-          <v-card class="fill-height elevation-10 " id="charts-wrapper">
+          <v-card class="fill-height " id="charts-wrapper">
             <slot name="header" v-bind:selectedDevice="currentDevice">
                   <!--Slot for displaying selected device info, by default there is only name and
                   city showed-->
@@ -12,7 +12,7 @@
               <v-tabs
                 primary
                 v-model="tab"
-                background-color="transparent"
+
                 grow>
                 <v-tabs-slider ></v-tabs-slider>
                 <v-tab href="#tab-0">Godzinowe</v-tab>
