@@ -1,13 +1,13 @@
 <template>
-  <v-card  class="fill-height d-flex flex-column pa-0 flex-grow-2 weather-card">
+  <v-card  class="fill-height d-flex flex-column pa-0 flex-grow-2 ">
+      <v-card-text class="text-left pa-3 white--text flex-grow-1 weather-card">
+        <div class="display-2"> {{selectedDevice.name}}</div>
+        <v-divider  dark></v-divider>
+        <div class="mb-3 text--primary">
+          <span >{{selectedDevice.city}}</span>
+          <span class="float-right">{{lastMeasure}}</span>
+        </div>
 
-      <v-card-title class="grey--text primary">
-        <h3>{{selectedDevice.city}} / <span class="white--text ">{{selectedDevice.name}}</span></h3>
-      </v-card-title>
-
-      <v-card-text class="text-left pa-3 flex-grow-1">
-        <span class="float-right">{{lastMeasure}}</span>
-        <p>Aktualny odczyt</p>
         <h1 v-for="sensor in PMSensors" :key="sensor.name" class="mb-2" style="width:100%">
           <div  v-if="sensor.measures.length " >
              <span class="mr-3 font-weight-light" >
@@ -29,15 +29,15 @@
         </h1>
 
       </v-card-text>
-        <v-divider class="my-5 mx-3 align-center"></v-divider>
-        <div class="d-flex justify-space-around text-center flex-grow-1 pa-3 align-center">
+
+        <div class="d-flex justify-space-around text-center flex-grow-1 pa-3 my-3 primary--text align-center">
           <div v-for="sensor in notPMSensors" :key="sensor.name" class="col-4 pa-0">
-          <div v-if="sensor.measures.length">
-            <div  class="display-1 font-weight-bold white--text">
-              {{sensor.measures[sensor.measures.length-1].value}}{{sensorTypeInfo[sensor.name].unit}}
+          <div v-if="sensor.measures.length" class="font-weight-light">
+            <div  class="display-1 font-weight-bold" >
+                {{sensor.measures[sensor.measures.length-1].value}}{{sensorTypeInfo[sensor.name].unit}}
             </div>
-            <div class="white--text">
-              <v-icon class="white--text">{{sensorTypeInfo[sensor.name].icon}}</v-icon>
+            <div class="subtitle-2" >
+              <v-icon class="primary--text  " small>{{sensorTypeInfo[sensor.name].icon}}</v-icon>
               {{sensorTypeInfo[sensor.name].name}}
             </div>
           </div>
@@ -89,6 +89,7 @@ export default {
 .weather-card{
   background-image: url("../assets/background2.jpg");
   background-position: center;
+
   background-size: cover;
 }
 

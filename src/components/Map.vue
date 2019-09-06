@@ -62,7 +62,7 @@ export default {
         fillOpacity: 0.5,
         radius: 500,
       }).addTo(this.circlesLayer);
-      circle.bindPopup(helpers.createMeasurePopup(device));
+      //circle.bindPopup(helpers.createMeasurePopup(device)); //disabled popup
       circle.on('click', () => {
         this.$emit('showDeviceCharts', device);
         this.mapInstance.setView([device.latitude+0.015  , device.longitude ], 13);

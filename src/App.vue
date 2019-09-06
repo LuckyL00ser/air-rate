@@ -69,6 +69,12 @@ a{
 .h-100{
     height:100%;
   }
+  .div-line{
+    width:32px;
+    height:4px;
+    background-color:white;
+    margin: 8px 0;
+  }
 
 
 </style>
