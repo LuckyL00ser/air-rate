@@ -1,91 +1,80 @@
 <template>
     <div>
-      <v-app-bar app id="bar" >
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
+
+      <v-app-bar absolute app id="bar" >
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up" style="position: absolute"></v-app-bar-nav-icon>
         <v-spacer class="hidden-md-and-up"></v-spacer>
         <router-link  to="/" class="mx-auto" id="bar-container">
           <img src="../assets/logo.png" alt="logo"/>
-          <v-toolbar-title class="headline">
+          <v-toolbar-title class="headline ">
             <span >Air</span>
             <span class="font-weight-light ">Rate</span>
           </v-toolbar-title>
         </router-link>
-        <span id="list" class="mx-10 d-none d-md-inline" >
-        <router-link tag="a" to="/products">Produkty</router-link>
-        <router-link tag="a" to="/about">O nas</router-link>
-        <router-link tag="a" to="/rules">Regulamin</router-link>
-      </span >
+<!--        <span id="list" class="mx-10 d-none d-md-inline" >-->
+<!--        <router-link tag="a" to="/products">Produkty</router-link>-->
+<!--        <router-link tag="a" to="/about">O nas</router-link>-->
+<!--        <router-link tag="a" to="/rules">Regulamin</router-link>-->
+<!--      </span >-->
         <v-spacer></v-spacer>
 
         <div class="d-none d-md-inline">
         <span v-if="status.loggedIn">
-        <v-btn outlined color="primary" class="mr-2"  to="/user-dashboard">
-          Panel użytkownika
+        <v-btn text color="primary"  to="/user-dashboard">
+          {{userData.username}}
         <v-icon class="ml-1">
           fas fa-user-circle
         </v-icon>
-      </v-btn>
 
-        <v-btn outlined color="accent" @click="$store.dispatch('user/logout')" >
-          Wyloguj
-        <v-icon class="ml-1">
+        </v-btn>
+       <v-btn text color="accent"  @click="logout" >
+        <v-icon >
         fas fa-sign-out-alt
         </v-icon>
       </v-btn>
+
+
       </span>
           <span v-else>
-        <v-btn outlined color="primary" class="mx-2" to="/register">
-          Rejestracja
-          <v-icon class="ml-1">
-            far fa-edit
-          </v-icon>
-      </v-btn>
-        <v-btn outlined color="secondary" to="/login">
-          Logowanie
-          <v-icon class="ml-1">
+
+        <a   @click="$emit('showLoginOverlay')">
+          Zaloguj się
+          <v-icon  class="primary--text">
             fas fa-sign-in-alt
           </v-icon>
-      </v-btn>
+      </a>
       </span>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer" app  temporary class="pa-3">
+      <v-navigation-drawer  v-model="drawer" app >
           <template v-slot:prepend>
-            <div class="drawer-prepend text-left">
+            <div class="drawer-prepend text-left pa-3 ">
               <img src="../assets/logo.png" alt="logo" class="navigation-image"/>
-              <span v-if="status.loggedIn" class="vertical-align">{{userData.username}}</span>
-              <span v-else>AirRate</span>
+              <h3 v-if="status.loggedIn" class="vertical-align font-weight-light">{{userData.username}}</h3>
+              <span v-else class="vertical-align font-weight-light">AirRate</span>
             </div>
             <v-divider></v-divider>
           </template>
         <v-list class="text-left" >
           <v-list-item-group color="primary">
             <v-list-item v-for="element in nav" :key="element.name" @click="$router.push({path: element.to})" >
-              <v-list-item-icon>
                 <v-icon class="mr-2">
                   {{element.icon}}
                 </v-icon>
-              </v-list-item-icon>
               <v-list-item-content>
                 {{element.name}}
               </v-list-item-content>
             </v-list-item>
             <v-list-item v-if="status.loggedIn" @click="$router.push({path: 'user-dashboard'})">
-              <v-list-item-icon>
-                <v-icon class="mr-2">
+              <v-icon class="mr-2">
                   fas fa-user-circle
                 </v-icon>
-              </v-list-item-icon>
               <v-list-item-title>
                 Panel użytkownika
               </v-list-item-title>
             </v-list-item>
           </v-list-item-group>
-
-
         </v-list>
-
-
         <template v-slot:append >
           <v-btn v-if="status.loggedIn" class="col-12 accent" @click="$store.dispatch('user/logout')">
             Wyloguj się
@@ -107,7 +96,9 @@
 
 <script>
 
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
+import Login from './Login';
+
 export default {
   name: 'Navbar',
   data() {
@@ -117,9 +108,9 @@ export default {
         {
           name: 'Mapa zanieczyszczeń',
           icon: 'fas fa-map-marked-alt',
-          to: '/'
+          to: '/',
         },
-        {
+        /* {
           name: 'Produkty',
           icon: 'fas fa-shopping-cart',
           to: '/products'
@@ -133,15 +124,23 @@ export default {
           name: 'Regulamin',
           icon: 'far fa-file-alt',
           to: '/rules'
-        },
+        }, */
 
-      ]
+      ],
 
     };
   },
   computed: {
-    ...mapState('user',['status','userData'])
-  }
+    ...mapState('user', ['status', 'userData']),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('user/logout');
+      this.$router.push('/');
+    },
+  },
+
+
 };
 </script>
 
@@ -166,7 +165,8 @@ export default {
     vertical-align: middle;
   }
   #bar{
-    z-index: 2000;
+    z-index: 6;
   }
+
 
 </style>

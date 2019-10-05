@@ -1,63 +1,40 @@
 <template>
-  <v-footer class="elevation-5 white pb-0 px-0 flex-column" app absolute id="footer">
+  <v-footer class="elevation-5  pb-0 px-0 flex-column "  app  absolute id="footer">
     <div class="d-none d-md-block py-0">
       <div class="py-1 mx-12">
         <img src="@/assets/logo.png" class="d-inline-block vertical-middle"/>
         <div class="d-inline-block vertical-middle">
           Nasza misja to walka o czyste i przyjazne środowisko.
-
         </div>
-
       </div>
-
         <v-divider class="w-100 py-1 "></v-divider>
-
     </div>
-    <div class="d-flex col-12 col-lg-10 col-xl-7 mt-2 mt-md-0 justify-center flex-wrap">
-      <div class="col-12 col-md-4 pa-0 pa-lg-3 d-flex justify-center">
-        <div>
-          <p class="font-weight-bold text--secondary">Kontakt</p>
-          <p class="mx-2 text-left d-inline-block">
-
-            AirRate S.A.<br>
-            ul. Akademicka 69<br>
-            35-114 Rzeszów<br>
-          </p>
-          <p class="mx-2 text-left d-inline-block">
-            Wojciech Czekirda<br>
-            <a href="tel: ">+48 000 000 000</a><br>
-            <a href="mailto: ">airrate@email.com</a>
-          </p>
-        </div>
-
-      </div>
-      <div class="col-12 col-md-4 my-md-0 my-5">
-        <p class="font-weight-bold text--secondary">Media</p>
-        <v-btn class="mx-3 primary--text" icon href="https://www.facebook.com/AirRate/" target="_blank">
+    <div class="d-flex col-12 col-md-8 col-lg-6 col-xl-7 justify-md-space-around justify-center flex-wrap text-md-left">
+      <div class="col-12 col-md-auto text--secondary">
+        <p class="font-weight-bold mx-4">Kontakt</p>
+        <v-btn class="mx-2 " color="primary" icon href="https://www.facebook.com/AirRate/" target="_blank">
           <v-icon size="30px">fab fa-facebook</v-icon>
         </v-btn>
-        <v-btn class="mx-3 primary--text" icon href="mailto:mail.airrate@gmail.com">
+        <v-btn class="mx-2 " color="primary" icon href="mailto:mail.airrate@gmail.com">
           <v-icon size="30px">fas fa-envelope </v-icon>
         </v-btn>
-        <v-btn class="mx-3 primary--text" icon href="tel: 000 000 000">
+        <v-btn class="mx-2" color="primary" icon href="tel: 000 000 000">
           <v-icon size="30px">fas fa-phone </v-icon>
         </v-btn>
       </div>
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-auto">
         <p class="font-weight-bold text--secondary">Informacje</p>
         <ul class=" px-0">
           <li><a href="#">Polityka prywatności</a></li>
           <li><a href="#">Regulamin</a></li>
         </ul>
-
       </div>
     </div>
 
       <v-divider class="w-100"></v-divider>
-    <div class="grey lighten-4 py-4 w-100">
-
-      <small class="font-weight-bold text--secondary">
-        &copy;{{currentYear}} — AirRate Team
+    <div class="grey lighten-3 py-4 w-100 white">
+      <small class="">
+        &copy;{{currentYear}} — AirRate
       </small>
     </div>
 

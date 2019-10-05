@@ -4,18 +4,16 @@
       <v-flex col-12>
         <h1 class="display-2">Panel użytkownika - {{userData.username}}</h1>
       </v-flex>
-      <v-flex col-lg-3 col-12 >
-        <v-card outlined class="fill-height d-flex flex-column">
+      <v-flex col-lg-3 col-12 col-md-4 col-sm-6>
+        <v-card  class="fill-height d-flex flex-column">
           <template name="append" >
             <v-card-title class="primary white--text">Twoje czujniki</v-card-title>
           </template>
           <v-card-text class="flex-grow-1">
             <v-list v-if="userDevices && userDevices.length">
               <v-list-item-group v-model="selectListIndex" class="text-medium" color="secondary">
-                <v-list-item v-for="device in userDevices" :key="device.device_id" @click="loadDeviceData(device)">
-                  <v-list-item-icon class="mr-2">
-                    <i class="fas fa-weight"></i>
-                  </v-list-item-icon>
+                <v-list-item v-for="device in userDevices" :key="device.device_id" @click="pickDevice(device)">
+
                   <v-list-item-content>
                     {{device.name}}
                   </v-list-item-content>
@@ -49,30 +47,24 @@
         </v-card>
 
       </v-flex>
-      <v-flex fill-heigth col>
+      <v-flex fill-heigth col-12 col-md>
         <v-card class="fill-height flex-grow-1">
           <!--          <map-sidebar :devices="mapFilteredDevices" dark/>-->
-          <map-sidebar ref="sidebar" class="pa-3 ">
+          <map-sidebar ref="sidebar" class="pa-3 " @hide="hideMapSidebar">
             <device-current-card  :selected-device="selectedDevice" />
           </map-sidebar>
-          <Map @showDeviceCharts="loadDeviceData" :fetchDataFunction="getUserCurrent" :devices="mapDevices" ref="map" />
+          <Map @showDeviceCharts="pickDeviceFromMap" :fetchDataFunction="getUserCurrent" :devices="mapDevices" ref="map" />
         </v-card>
       </v-flex>
 <!--      <v-flex col-lg-3 col-md-6 col-12 v-if="selectedDevice">-->
 <!--        <device-current-card  :selected-device="selectedDevice" />-->
 <!--      </v-flex>-->
 
-      <v-flex col-12 v-if="this.selectedDevice">
-
+      <v-flex col-12 v-if="selectedDevice">
           <div>
-            <h2>Pomiary zagregowane:</h2>
-            <v-switch v-model="daily" class="d-inline-block" label="Dniowe" ></v-switch>
-
-            <charts-display-container :daily="daily" :sensors="daily? userDailySensors : userHourlySensors" class="charts" chart-class="custom-chart v-card v-sheet elevation-9">
-
+            <charts-display-container :daily="daily" :sensors="daily? userDailySensors : userHourlySensors" class="charts" chart-class="custom-chart  elevation-9">
             </charts-display-container>
           </div>
-
 
       </v-flex>
     </v-layout>
@@ -92,7 +84,7 @@ import MapSidebar  from '../components/MapSidebar';
 export default {
   name: 'UserDashboard',
   components: {
-    ChartsDisplayContainer, Map, LoadingOverlay, MapCharts, DeviceCurrentCard, MapSidebar
+    ChartsDisplayContainer, Map, LoadingOverlay, DeviceCurrentCard, MapSidebar
   },
   data() {
     return {
@@ -127,18 +119,25 @@ export default {
   },
   methods: {
     ...mapActions('measures', ['getUserDevices', 'getUserDaily', 'getUserHourly', 'getUserCurrent']),
-    async loadDeviceData(device) {
+    async pickDeviceFromMap(device){
       const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
-
       if (mapDevice) {
         this.selectedDevice = mapDevice;
-        this.$refs.map.centerOn(mapDevice.latitude, mapDevice.longitude);
         this.$refs.sidebar.open();
-      //  this.$refs.charts.fetchAndShowData(mapDevice);
-          await this.getUserHourly(mapDevice.device_id);
-        await this.getUserDaily(mapDevice.device_id);
+        await this.getUserHourly(device.device_id);
+        await this.getUserDaily(device.device_id);
       }
     },
+    pickDevice(device){
+      const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
+      if (mapDevice) this.$refs.map.deviceGainedFocus(mapDevice)
+    },
+
+
+    hideMapSidebar(){
+      this.$refs.map.deviceLostFocus();
+      this.selectedDevice=null;
+    }
 
   },
 };

@@ -2,7 +2,12 @@
     <div class="charts-container">
       <slot name="prepend">
       </slot>
-      <chart v-for="(sensor, index) in groupedSensors"  :key="index" :sensors="sensor" :show-title="title" :daily="daily" :class="chartClass" />
+      <chart v-for="(sensor, index) in groupedSensors"
+             :key="index" :sensors="sensor"
+             :daily="daily"
+             :class="chartClass"
+             @selected="selectedOption"
+      />
     </div>
 </template>
 
@@ -18,14 +23,7 @@ export default {
       type: Array,
       default: ()=>[],
     },
-    daily: {
-      type: Boolean, default: false,
-    },
-    title: {
-      type: Boolean,
-      default: true,
-    },
-    chartClass:{
+    chartClass: {
       type: String,
       default: '',
     }
@@ -33,11 +31,23 @@ export default {
   data() {
     return {
      // : [],
+      headerOptions: [
+        {name: 'godzinowe', value: 0},
+        {name: 'dzienne', value: 1},
+
+      ],
+      daily: false,
     };
   },
   computed: {
     groupedSensors() {
      return helpers.groupByType(this.sensors);
+    },
+  },
+  methods: {
+    selectedOption(option) {
+      this.daily = !!option.value;
+      //TODO: emit data change request
     },
   },
 };

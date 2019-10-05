@@ -5,9 +5,10 @@ import Home from './views/Home.vue';
 import About from './views/About.vue';
 import PermissionDenied from './views/PermissionDenied.vue';
 import UnknownPage from './views/UnknownPage.vue';
-import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import UserDashboard from './views/UserDashboard.vue';
+import LoginView from './views/LoginView';
+import MapView from './views/MapView.vue';
 
 Vue.use(Router);
 
@@ -16,10 +17,18 @@ const router=new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: MapView,
       meta: {
         public: true,
         }
+    },
+    {
+      path: '/map',
+      name: 'MapView',
+      component: Home,
+      meta: {
+        public: true,
+      }
     },
     {
       path: '/about',
@@ -32,7 +41,7 @@ const router=new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login,
+      component: LoginView,
       meta: {
         public: true,
       }

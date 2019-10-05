@@ -16,14 +16,14 @@ const store = new Vuex.Store({
     measures,
   },
   actions: {
-    initStore({ dispatch }) {
+    initStore({ dispatch, commit }) {
       const savedUser = JSON.parse(localStorage.getItem('user'));
       userService.setAuthorizationToken(
         JSON.parse(localStorage.getItem('token')),
       );
 
       if (savedUser) {
-        console.log(savedUser);
+        commit('user/setUserData', savedUser);
         dispatch('user/getUserData');
       }
     },
@@ -33,17 +33,17 @@ const store = new Vuex.Store({
 
 axios.interceptors.response.use(response => response,
   (error) => {
-
     let errorMessage = error.message;
-    if(error.response)
-    switch (error.response.status) {
-      case 404:
-        errorMessage = 'Brak połączenia';
-        break;
-      case 401:
-        errorMessage = 'Brak autoryzacji użytkownika';
-        userService.removeUserData();
-        userService.removeAuthorizationToken();
+    if (error.response) {
+      switch (error.response.status) {
+        case 404:
+          errorMessage = 'Brak połączenia';
+          break;
+        case 401:
+          errorMessage = 'Brak autoryzacji użytkownika';
+          userService.removeUserData();
+          userService.removeAuthorizationToken();
+      }
     }
     store.dispatch('alert/error', errorMessage);
     return error;

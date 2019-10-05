@@ -1,14 +1,9 @@
 <template>
-  <v-container fill-height>
+  <v-container fill-height >
     <v-layout fill-height>
-      <v-flex   col-12 col-xl-3 col-md-5 col-sm-8 mx-auto my-auto>
-        <v-card>
-          <v-overlay
-            absolute
-            :value="!!status.processingRegistration">
-            <v-progress-circular id="overlay" indeterminate size="50" color="primary"></v-progress-circular>
-          </v-overlay>
-          </v-progress-circular>
+      <v-flex class="my-10">
+      <v-card class="col-12 col-xl-3 col-md-5 col-sm-8 mx-auto my-auto">
+
           <v-card-text class="text-left">
             <h1 class="greeting mt-2 mb-4 ">Nowe konto</h1>
             <div class="d-flex">
@@ -39,15 +34,20 @@
                 </v-text-field>
               </v-form>
               <v-card-actions class="flex-shrink-1 d-none d-md-flex ml-3">
-                <v-btn @click="validate" fab x-large color="success" typeof="submit">
+                <v-btn @click="validate" fab x-large color="success" typeof="submit"
+                    :loading="!!status.processingRegistration"
+                    :disabled="!!status.processingRegistration">
                   <v-icon>
                     fas fa-chevron-right
                   </v-icon></v-btn>
               </v-card-actions>
             </div>
             <v-card-actions class="d-block px-0">
-              <v-btn @click="validate" class="d-md-none d-block secondary">Zaloguj się</v-btn>
-              <small class="d-block mt-2">Nie masz jeszcze konta? <router-link to="/register">Zaloguj się</router-link></small>
+              <v-btn @click="validate" class="d-md-none d-block secondary"
+                     :loading="!!status.processingRegistration"
+                     :disabled="!!status.processingRegistration">
+                Zarejestruj się</v-btn>
+
             </v-card-actions>
           </v-card-text>
         </v-card>

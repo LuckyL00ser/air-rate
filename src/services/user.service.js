@@ -1,8 +1,5 @@
 import axios from '../axios.config.js';
 
-
-
-
 // local storage manipulations
 function setAuthorizationToken(token) {
   if (token) {
@@ -31,7 +28,7 @@ function removeUserData(){
 function getUserData() {
   return axios.get('/api/auth/user')
     .then(
-      response=>{
+      (response)=>{
         setUserData(response.data);
         return response.data;
       }
@@ -44,11 +41,7 @@ function login(_username, _password) {
     username: _username,
     password: _password,
   })
-    .then((response) => {
-      setAuthorizationToken(response.data.token);
-      setUserData(response.data.user);
-      return response.data;
-    });
+
 }
 function logout() {
    return axios.post('/api/auth/logout')

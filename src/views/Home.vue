@@ -1,90 +1,17 @@
 <template>
-  <v-container fluid pa-0  id="container" fill-height>
-<!--    <v-layout col-10 col-lg-6 class="h-100vh"  >-->
-<!--        <v-card  class="font-weight-light" id="splash" v-bind:style="{left:computedLeft}">-->
-<!--              <v-card-text class="text-left">-->
-<!--                <div class="display-4 text&#45;&#45;secondary font-weight-medium">-->
-<!--                  <span class="d-inline-block v-align-middle">AirRate</span>-->
-<!--                </div>-->
-<!--                <div id="greeting" class="py-4 ">-->
-<!--                  <p>Nasza walka o czystsze jutro.</p>-->
-<!--                  <p>Już dziś dołącz do naszego projektu i zamów bezprzewodowy czujnik jakości powietrza dla Twojej okolicy.</p>-->
-<!--                  <v-btn large class="primary darken-1 pa-5 mt-5" to="/register">-->
-<!--                    Dołącz do nas-->
-<!--                  </v-btn>-->
-<!--                </div>-->
-<!--              </v-card-text>-->
-<!--        </v-card>-->
-<!--    </v-layout>-->
-    <v-layout class=" col-12 pa-0 relative overflow-hidden" >
+  <v-container fluid pa-0 fill-height>
+    <v-layout>
 
-          <map-sidebar ref="sidebar" class="pa-3 ">
-            <map-charts ref="charts"
-                        :fetch-daily="getDailyMeasures"
-                        :fetch-hourly="getHourlyMeasures"
-                        :data-daily="daily? daily.sensors: []"
-                        :data-hourly="hourly? hourly.sensors: []">
-              <template v-slot:header="slotProps">
-                <v-card-title >
-                  <device-current-card :selected-device="slotProps.selectedDevice" class="col-12"/>
-                </v-card-title>
-
-              </template>
-            </map-charts>
-          </map-sidebar>
-        <Map @showDeviceCharts="showDeviceCharts" :fetchDataFunction="getCurrentMeasures"  :devices="$store.state.measures.current" class="home-map"/>
     </v-layout>
-
   </v-container>
 
 
 </template>
 
 <script>
-// @ is an alias to /src
-import Map from '../components/Map.vue';
-import MapCharts from '../components/MapCharts.vue';
-import MapSidebar from '../components/MapSidebar';
-import {mapActions, mapState} from 'vuex';
-import DeviceCurrentCard from '../components/DeviceCurrentCard';
 
 export default {
   name: 'home',
-  components: {
-    DeviceCurrentCard,
-    Map,
-    MapCharts,
-    MapSidebar
-  },
-  data(){
-    return{
-      scrollTop: 0,
-
-    }
-  },
-  computed:{
-    ...mapState('measures',['current','daily','hourly']),
-    computedLeft(){
-      return -this.scrollTop+'px';
-    }
-  },
-  methods:{
-    ...mapActions('measures',['getCurrentMeasures','getDailyMeasures','getHourlyMeasures']),
-    handleScroll(){
-      this.scrollTop = 5*window.innerWidth*window.scrollY / window.innerHeight;
-      },
-    showDeviceCharts(device){
-
-      this.$refs.sidebar.open();
-      this.$refs.charts.fetchAndShowData(device);
-    }
-  },
-  created () {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
 
 };
 </script>
@@ -93,7 +20,7 @@ export default {
     height: 100vh;
   }
   .home-map{
-    min-height: 80vh;
+    min-height: 90vh;
   }
   .fixed{
     position: fixed !important;

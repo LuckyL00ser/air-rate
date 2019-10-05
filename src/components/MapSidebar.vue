@@ -1,5 +1,10 @@
 <template>
   <div id="map-sidebar" :class="{'expanded':show}" :style="{'width': getResponsiveWidth}">
+    <v-btn fab color="accent" class="mr-n3 mt-8" absolute top right @click="close">
+      <v-icon>
+        fas fa-times
+      </v-icon>
+    </v-btn>
     <slot>
 
     </slot>
@@ -21,6 +26,7 @@
       },
       close(){
         this.show=false;
+        this.$emit('hide');
       }
     },
     computed: {
@@ -28,7 +34,7 @@
         switch (this.$vuetify.breakpoint.name) {
           case 'xs': return '100%';
           case 'sm': return '100%';
-          case 'md': return '98%';
+          case 'md': return '60%';
           case 'lg': return '40%';
           case 'xl': return '40%';
         }
@@ -39,7 +45,7 @@
 
 <style scoped>
 #map-sidebar{
-  z-index:1000;
+  z-index:4;
   transition: right 0.5s;
   position: absolute;
   top:0;

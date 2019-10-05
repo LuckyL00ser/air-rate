@@ -1,5 +1,5 @@
 <template>
-  <v-overlay  :value="fetching" class="loading-overlay" :absolute="true">
+  <v-overlay  :value="fetching" class="loading-overlay" opacity="0.7" absolute>
     <div class="my-4">Pobieranie danych...</div>
     <v-progress-circular
       :size="50"

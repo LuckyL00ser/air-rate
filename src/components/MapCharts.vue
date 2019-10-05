@@ -1,57 +1,43 @@
 <template>
-          <v-card class="fill-height " id="charts-wrapper">
+          <div class="fill-height " id="charts-wrapper">
             <slot name="header" v-bind:selectedDevice="currentDevice">
                   <!--Slot for displaying selected device info, by default there is only name and
                   city showed-->
-              <v-card-title >
                 <h1>{{currentDevice.city}} - </h1>
                 <h1 class="secondary--text"> {{currentDevice.name}}</h1>
-              </v-card-title>
+
             </slot>
+
             <div v-if="showCharts">
-              <v-tabs
-                primary
-                v-model="tab"
-
-                grow>
-                <v-tabs-slider ></v-tabs-slider>
-                <v-tab href="#tab-0">Godzinowe</v-tab>
-                <v-tab href="#tab-1" >Dzienne</v-tab>
-
-                  <v-tab-item  class="px-1 "   value="tab-0" >
-                    <charts-display-container :sensors="dataHourly" chart-class="mx-2 my-5"/>
-                  </v-tab-item>
-                  <v-tab-item class="px-1 "  value="tab-1" >
-                    <charts-display-container :sensors="dataDaily" :daily="true" chart-class="mx-2 my-5" />
-                  </v-tab-item>
-
-
-              </v-tabs>
+              <div>
+                      <charts-carousel  :sensors="dataHourly" chart-class="my-2 mx-1 v-card theme--light v-sheet pa-2" class="my-4"/>
+              </div>
             </div>
-            <h3 v-else class="center-absolute text--secondary">Brak czujników w tym urządzeniu</h3>
-            <loading-overlay :fetching="fetchingData"/>
-          </v-card>
+            <v-card v-else color="error" class=" my-3 col-12 white--text ">Brak czujników w tym urządzeniu</v-card>
+            <loading-overlay class=""  :fetching="fetchingData"/>
+          </div>
 
 </template>
 
 <script>
 import ChartsDisplayContainer from './ChartsDisplayContainer';
 import LoadingOverlay from './LoadingOverlay.vue';
+import ChartsCarousel from './ChartsCarousel';
 
 
 export default {
   name: 'MapCharts',
-  components: { LoadingOverlay, ChartsDisplayContainer },
+  components: { ChartsCarousel, LoadingOverlay, ChartsDisplayContainer },
   props: {
     fetchDaily: Function,
     fetchHourly: Function, // external fetch functions
     dataDaily: {
       type: Array,
-      default: ()=>[],
+      default: () => [],
     },
     dataHourly: {
       type: Array,
-      default: ()=>[],
+      default: () => [],
     },
   },
   data() {
@@ -61,16 +47,17 @@ export default {
       currentDevice: {
         city: '',
         name: '',
+        sensors: [],
       },
-      tab: 'tab-0',
+
 
     };
   },
   computed: {
-    showCharts(){
+    showCharts() {
       return this.dataDaily.length || this.dataHourly.length || this.fetchingData;
-    }
     },
+  },
   methods: {
     async fetchAndShowData(device) {
       this.show = true;
@@ -94,10 +81,9 @@ export default {
 
 }
 #charts-wrapper{
-  overflow-y: scroll;
+  position: relative;
   height: 100%;
 }
-
 
 
 </style>

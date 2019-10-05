@@ -1,4 +1,5 @@
 import * as userService from '../services/user.service.js';
+import { setAuthorizationToken, setUserData } from '../services/user.service';
 
 // TODO: set promises in actions into await/async code
 
@@ -10,20 +11,20 @@ const state = {
 };
 
 const actions = {
-  login({ dispatch, commit }, { username, password }) {
+  //TODO: change all actions into async/await instead of promises
+  async login({ dispatch, commit }, { username, password }) {
     commit('loggingIn');
-    userService.login(username, password)
-      .then(
-        (data) => {
-          commit('loggedIn', data);
-          dispatch('alert/success', 'Zalogowano', { root: true });
-        },
-      )
-      .catch(
-        () => {
-          commit('loginFailed');
-        },
-      );
+    try {
+      const response = await userService.login(username, password);
+      userService.setAuthorizationToken(response.data.token);
+      userService.setUserData(response.data.user);
+      commit('loggedIn', response.data);
+      dispatch('alert/success', 'Zalogowano', { root: true });
+      return response.data;
+    } catch (error) {
+      commit('loginFailed');
+      throw error;
+    }
   },
   logout({ commit }) {
     userService.logout()

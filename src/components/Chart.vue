@@ -1,23 +1,27 @@
 <template>
-  <div class="d-flex flex-column">
-    <h3 v-if="showTitle">{{name}}</h3>
-    <span class=" d-block text--secondary" v-if="!anyMeasures">
+  <div class="d-flex flex-column text-left">
+      <div class="d-flex justify-space-between align-center pa-2">
+        <h2 class="primary--text">{{name}}</h2>
+        <select-list v-if="showSelect" :options="headerOptions" @selected="$emit('selected',$event)"/>
+      </div>
+      <v-divider class="mx-2" light></v-divider>
+      <span class=" d-block text--secondary pa-2" v-if="!anyMeasures">
       Brak aktualnych danych
     </span>
     <div v-show="anyMeasures" class="chart-container flex-grow-1">
       <canvas class="chart" ref="chart" ></canvas>
     </div>
   </div>
-
 </template>
-
 <script>
 import * as charts from '../services/charts.js';
 import * as helpers from '../services/helpers.js';
+import SelectList from './SelectList';
 
 export default {
   name: 'Chart',
-  props: { sensors: Array, showTitle: Boolean, daily: Boolean },  //array with sensors objects
+  components: { SelectList },
+  props: { sensors: Array, daily: Boolean, showSelect: Boolean ,headerOptions: Array },  //array with sensors objects
   data(){
     return {
       jsChart: null,
@@ -26,13 +30,12 @@ export default {
       name: '',
     }
   },
-  watch:{
-    sensors(newData){
+  watch: {
+    sensors(newData) {
       this.showData(newData);
     },
-    daily(dailyChart){
-
-      if(this.jsChart){
+    daily(dailyChart) {
+      if (this.jsChart) {
         this.jsChart.options.scales.xAxes = [{
           type: 'time',
           scaleLabel: {
@@ -98,6 +101,7 @@ export default {
           this.jsChart.data.datasets[i].data = charts.pick(sensors[i].measures, 'value');
         this.jsChart.update();
     },
+
 
 
   },

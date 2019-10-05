@@ -1,5 +1,5 @@
 <template>
-  <v-card  class="fill-height d-flex flex-column pa-0 flex-grow-2 ">
+  <v-card  class="fill-height d-flex flex-column pa-0 flex-grow-2 " v-if="selectedDevice">
       <v-card-text class="text-left pa-3 white--text flex-grow-1 weather-card">
         <div class="display-2"> {{selectedDevice.name}}</div>
         <v-divider  dark></v-divider>
@@ -21,29 +21,23 @@
                 <v-icon  class="float-right" v-on="on">far fa-question-circle</v-icon>
               </template>
               <span>TODO: dodać opis</span>
-
             </v-tooltip>
           </div>
-
-
         </h1>
-
       </v-card-text>
-
         <div class="d-flex justify-space-around text-center flex-grow-1 pa-3 my-3 primary--text align-center">
           <div v-for="sensor in notPMSensors" :key="sensor.name" class="col-4 pa-0">
-          <div v-if="sensor.measures.length" class="font-weight-light">
+          <div v-if="sensor.measures.length" >
             <div  class="display-1 font-weight-bold" >
                 {{sensor.measures[sensor.measures.length-1].value}}{{sensorTypeInfo[sensor.name].unit}}
             </div>
-            <div class="subtitle-2" >
+            <div class="subtitle-2 font-weight-light" >
               <v-icon class="primary--text  " small>{{sensorTypeInfo[sensor.name].icon}}</v-icon>
               {{sensorTypeInfo[sensor.name].name}}
             </div>
           </div>
         </div>
         </div>
-
      </v-card>
 </template>
 
@@ -52,13 +46,19 @@ import * as helpers from '../services/helpers.js';
 // TODO: current measures show the oldest measures
 export default {
   name: 'DeviceCurrentCard',
-  props: { selectedDevice: Object },
+  props: {
+    selectedDevice: Object,
+  },
   computed: {
     PMSensors() {
+
       return this.selectedDevice.sensors.filter(e => helpers.isPMSensor(e));
+
     },
     notPMSensors() {
+
       return this.selectedDevice.sensors.filter(e => !helpers.isPMSensor(e));
+
     },
     sensorTypeInfo() {
       return helpers.sensorType;
