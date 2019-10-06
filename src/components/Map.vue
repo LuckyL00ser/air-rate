@@ -1,8 +1,6 @@
 <template>
- <div class="container--fluid flex-grow-1" id="main"  >
-
+ <div class="container--fluid flex-grow-1" id="main">
    <transition name="fade">
-
      <div id="mobile-drag" v-if="mobileDragOverlay">
        <div>Użyj dwóch palców by przesunąć mapę</div>
        <div>
@@ -11,11 +9,8 @@
        </div>
      </div>
    </transition>
-   <div id="map-container" @dragstart="dragHandler"></div>
-
-
+   <div id="map-container" ></div>
  </div>
-
 </template>
 
 <script>
@@ -34,6 +29,7 @@ export default {
       selectedRegionIcon: null,
       focusMarkerLayer: null,
       mobileDragOverlay: false,
+
     };
   },
   watch: {
@@ -49,7 +45,14 @@ export default {
   },
   methods: {
     createMap() {
-      this.mapInstance = L.map('map-container', { dragging: !L.Browser.mobile }).setView([50.0340021, 22.00450923], 13);
+      this.mapInstance = L.map('map-container',{dragging: !L.Browser.mobile}).setView([50.0340021, 22.00450923], 13);
+      this.mapInstance._container.addEventListener('touchstart',this.dragHandler);
+      this.mapInstance._container.addEventListener('touchend',this.finishMobileDrag);
+    //  this.mapInstance.on('dragend',this.finishMobileDrag);
+      //this.mapInstance._container.addEventListener('tou',this.dragHandler)
+      //this.mapInstance._container.addEventListener('touchend', this.finishMobileDrag)
+    //  this.mapInstance.on('dragstart', this.dragHandler);
+    //  this.mapInstance.on('dragend', this.finishMobileDrag);
       this.mapInstance.on('locationfound', (e) => {
         this.$store.dispatch('alert/info', `Znajdujesz się w promieniu ${e.accuracy}m od tego miejsca`);
       });
@@ -72,13 +75,18 @@ export default {
         this.fetchDataFunction();
       }
     },
-    dragHandler(){
-      console.log('dupaxd')
-        this.mapInstance.on('dragstart', () => {
-          setTimeout(() => this.mobileDragOverlay = false, 4000);
-          this.mobileDragOverlay = true;
-        });
-
+    finishMobileDrag(e) {
+      if (L.Browser.mobile) {
+        setTimeout(() => this.mobileDragOverlay = false, 100);
+      }
+      return e;
+    },
+    dragHandler(e) {
+      console.log(this.mapInstance)
+      if (L.Browser.mobile) {
+        this.mobileDragOverlay = true;
+      }
+      return e;
     },
     addRegion(device) {
       const circleColor = helpers.getCircleColorFromPollution(device);
