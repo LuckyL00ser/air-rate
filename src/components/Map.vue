@@ -1,15 +1,6 @@
 <template>
  <div class="container--fluid flex-grow-1" id="main">
-   <transition name="fade">
-     <div id="mobile-drag" v-if="mobileDragOverlay">
-       <div>Użyj dwóch palców by przesunąć mapę</div>
-       <div>
-         <v-icon class="fas fa-hand-point-right white--text mx-2" />
-         <v-icon class="fas fa-hand-point-left  white--text" />
-       </div>
-     </div>
-   </transition>
-   <div id="map-container" ></div>
+      <div id="map-container" ></div>
  </div>
 </template>
 
@@ -18,6 +9,10 @@ import L from 'leaflet';
 import * as helpers from '../services/helpers.js';
 import 'leaflet/dist/leaflet.css';
 import targetImage from '../assets/target.gif';
+import { GestureHandling } from 'leaflet-gesture-handling';
+
+
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
 
 export default {
   name: 'Map',
@@ -45,18 +40,26 @@ export default {
   },
   methods: {
     createMap() {
-      this.mapInstance = L.map('map-container',{dragging: !L.Browser.mobile}).setView([50.0340021, 22.00450923], 13);
-      this.mapInstance._container.addEventListener('touchstart',this.dragHandler);
-      this.mapInstance._container.addEventListener('touchend',this.finishMobileDrag);
-    //  this.mapInstance.on('dragend',this.finishMobileDrag);
-      //this.mapInstance._container.addEventListener('tou',this.dragHandler)
-      //this.mapInstance._container.addEventListener('touchend', this.finishMobileDrag)
-    //  this.mapInstance.on('dragstart', this.dragHandler);
-    //  this.mapInstance.on('dragend', this.finishMobileDrag);
+      L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
+      this.mapInstance = L.map('map-container',
+        {
+
+          gestureHandling: true,
+          gestureHandlingOptions: {
+            text: {
+              touch: 'Użyj dwóch palców by przesunąć mapę',
+            },
+          },
+        })
+        .setView([50.0340021, 22.00450923], 13);
+
       this.mapInstance.on('locationfound', (e) => {
         this.$store.dispatch('alert/info', `Znajdujesz się w promieniu ${e.accuracy}m od tego miejsca`);
       });
-
+      this.mapInstance.on('locationerror', (e) => {
+        this.$store.dispatch('alert/error', `Błąd lokalizacji: ${e.message}`);
+      });
+      this.mapInstance.locate({setView: true, maxZoom: 13})
       L.tileLayer(process.env.VUE_APP_MAPS_TILES_URL,
         {
           attribution: 'Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -75,19 +78,7 @@ export default {
         this.fetchDataFunction();
       }
     },
-    finishMobileDrag(e) {
-      if (L.Browser.mobile) {
-        setTimeout(() => this.mobileDragOverlay = false, 100);
-      }
-      return e;
-    },
-    dragHandler(e) {
-      console.log(this.mapInstance)
-      if (L.Browser.mobile) {
-        this.mobileDragOverlay = true;
-      }
-      return e;
-    },
+
     addRegion(device) {
       const circleColor = helpers.getCircleColorFromPollution(device);
       // creates circle on map
@@ -157,25 +148,5 @@ export default {
     white-space: nowrap;
     width: auto !important;
   }
-  #mobile-drag{
-    background: rgba(0, 0, 0, 0.67);
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color:white;
-    width:100%;
-    height: 100%;
-    top:0;
-    left:0;
-    z-index: 200;
-  }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 
 </style>

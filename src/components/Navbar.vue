@@ -165,7 +165,7 @@ export default {
     vertical-align: middle;
   }
   #bar{
-    z-index: 6;
+    z-index: 4;
   }
 
 

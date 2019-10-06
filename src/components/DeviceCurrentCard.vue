@@ -26,11 +26,11 @@
         </h1>
       </v-card-text>
         <div class="d-flex justify-space-around text-center flex-grow-1 pa-3 my-3 primary--text align-center">
-          <div v-for="sensor in notPMSensors" :key="sensor.name" class="col-4 pa-0">
+          <div v-for="sensor in notPMSensors" :key="sensor.name" class="col pa-0">
           <div v-if="sensor.measures.length" >
-            <div  class="display-1 font-weight-bold" >
+            <h1  class=" font-weight-bold" >
                 {{sensor.measures[sensor.measures.length-1].value}}{{sensorTypeInfo[sensor.name].unit}}
-            </div>
+            </h1>
             <div class="subtitle-2 font-weight-light" >
               <v-icon class="primary--text  " small>{{sensorTypeInfo[sensor.name].icon}}</v-icon>
               {{sensorTypeInfo[sensor.name].name}}
@@ -51,14 +51,10 @@ export default {
   },
   computed: {
     PMSensors() {
-
       return this.selectedDevice.sensors.filter(e => helpers.isPMSensor(e));
-
     },
     notPMSensors() {
-
       return this.selectedDevice.sensors.filter(e => !helpers.isPMSensor(e));
-
     },
     sensorTypeInfo() {
       return helpers.sensorType;
