@@ -1,10 +1,22 @@
 const sensorType = {
-  PM1: { name: 'PM1', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '' },
-  'PM2.5': { name: 'PM2.5', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '' },
-  PM10: { name: 'PM10', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '' },
-  Temperature: { name: 'Temperatura', unit: '°C', type: 'temperature', icon: 'fas fa-thermometer-half' },
-  Humidity: { name: 'Wilgotność ', unit: '%', type: 'humidity', icon: 'fas fa-tint' },
-  Pressure: { name: 'Ciśnienie', unit: 'hPa', type: 'pressure', icon: 'fas fa-chart-bar' },
+  PM1: {
+    name: 'PM1', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '',
+  },
+  'PM2.5': {
+    name: 'PM2.5', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '',
+  },
+  PM10: {
+    name: 'PM10', unit: 'μg/m³', type: 'PM', commonName: 'Zapylenie', icon: '',
+  },
+  Temperature: {
+    name: 'Temperatura', unit: '°C', type: 'temperature', icon: 'fas fa-thermometer-half',
+  },
+  Humidity: {
+    name: 'Wilgotność ', unit: '%', type: 'humidity', icon: 'fas fa-tint',
+  },
+  Pressure: {
+    name: 'Ciśnienie', unit: 'hPa', type: 'pressure', icon: 'fas fa-chart-bar',
+  },
 };
 function isPMSensor(sensor) {
   return sensor.name.match(/PM+/gi);
@@ -16,10 +28,10 @@ function measuresToString(sensors) {
     if (sensor.measures.length) { // checks if sensor has ANY measures
       string += `<b> ${sensorType[sensor.name].name}: </b>`; // maps english names to polish
       if (isPMSensor(sensor)) { // for dust pollution return also color as norm indicator
-        string += `<span class="${unifyValueAndGetColor(sensor.name, sensor.measures[sensor.measures.length-1].value)}--text">  
-                        ${sensor.measures[sensor.measures.length-1].value}${sensorType[sensor.name].unit}</span><br>`;
+        string += `<span class="${unifyValueAndGetColor(sensor.name, sensor.measures[sensor.measures.length - 1].value)}--text">  
+                        ${sensor.measures[sensor.measures.length - 1].value}${sensorType[sensor.name].unit}</span><br>`;
       } else { // for ordinary measures like temperature, humidity, pressure
-        string += `${sensor.measures[sensor.measures.length-1].value}${sensorType[sensor.name].unit}<br>`;
+        string += `${sensor.measures[sensor.measures.length - 1].value}${sensorType[sensor.name].unit}<br>`;
       }
     }
   });
@@ -28,23 +40,22 @@ function measuresToString(sensors) {
 /*
 Generates html tags and content for map popup
  */
-function localDate(date){
+function localDate(date) {
   return new Date(date).toLocaleString('pl-PL');
 }
 function createMeasurePopup(device) {
   return `<div class="measure-popup">
-              <b>Aktualny pomiar:</b> <br> ${device.sensors.length? localDate(device.sensors[0].measures[device.sensors[0].measures.length-1].created_at): 'brak'}<br>
+              <b>Aktualny pomiar:</b> <br> ${device.sensors.length ? localDate(device.sensors[0].measures[device.sensors[0].measures.length - 1].created_at) : 'brak'}<br>
               <b>Miasto:</b> ${device.city}<br>
               <b>Czujnik: </b>${device.name}<br>
               ${measuresToString(device.sensors)}
           </div>`;
 }
-//groups device sensors by its Type
+// groups device sensors by its Type
 function groupByType(sensors) {
-  let grouped = [];
+  const grouped = [];
   sensors.forEach((sensor) => {
-    if (isPMSensor(sensor) && grouped.length)
-      grouped[0].push(sensor);
+    if (isPMSensor(sensor) && grouped.length) grouped[0].push(sensor);
     else grouped.push([sensor]);
   });
   return grouped;
@@ -79,10 +90,8 @@ function unifyValue(type, value) {
   return value;
 }
 function unifyValueAndGetColor(type, value) {
-  if(isPMSensor({name: type}))
-  return getColorFromPollution(unifyValue(type, value));
-  else
-    return 'black';
+  if (isPMSensor({ name: type })) return getColorFromPollution(unifyValue(type, value));
+  return 'black';
 }
 /*
 As function name says - for values in range [0,inf]
@@ -109,5 +118,5 @@ function getCircleColorFromPollution(device) {
 
 export {
   measuresToString, createMeasurePopup, isPMSensor, getColorFromPollution,
-  unifyValueAndGetColor, getPM1level, getPM10level, getPM25level, getCircleColorFromPollution, sensorType, groupByType
+  unifyValueAndGetColor, getPM1level, getPM10level, getPM25level, getCircleColorFromPollution, sensorType, groupByType,
 };

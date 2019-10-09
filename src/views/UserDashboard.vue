@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap>
+    <v-layout row justify-sm-center wrap>
       <v-flex col-12>
         <h1 class="display-2">Panel użytkownika - {{userData.username}}</h1>
       </v-flex>
@@ -50,28 +50,23 @@
       <v-flex fill-heigth col-12 col-md>
         <v-card class="fill-height flex-grow-1">
           <!--          <map-sidebar :devices="mapFilteredDevices" dark/>-->
-          <map-sidebar ref="sidebar" class="pa-3 " @hide="hideMapSidebar">
+          <map-sidebar ref="sidebar"  @hide="hideMapSidebar">
             <device-current-card  :selected-device="selectedDevice" />
           </map-sidebar>
           <Map @showDeviceCharts="pickDeviceFromMap" :fetchDataFunction="getUserCurrent" :devices="mapDevices" ref="map" />
         </v-card>
       </v-flex>
-<!--      <v-flex col-lg-3 col-md-6 col-12 v-if="selectedDevice">-->
-<!--        <device-current-card  :selected-device="selectedDevice" />-->
-<!--      </v-flex>-->
-
-      <v-flex col-12 v-if="selectedDevice">
-          <div>
-            <charts-display-container :daily="daily" :sensors="daily? userDailySensors : userHourlySensors" class="charts" chart-class="custom-chart  elevation-9">
-            </charts-display-container>
-          </div>
-
+    </v-layout>
+    <v-layout row>
+      <v-flex col-12 pt-0 v-if="selectedDevice">
+        <div>
+          <charts-display-container :daily="daily" :sensors="daily? userDailySensors : userHourlySensors" class="charts" chart-class="custom-chart elevation-9">
+          </charts-display-container>
+        </div>
       </v-flex>
     </v-layout>
-
   </v-container>
 </template>
-
 <script>
 import { mapState, mapActions } from 'vuex';
 import MapCharts from '../components/MapCharts.vue';
@@ -79,12 +74,12 @@ import Map from '../components/Map.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
 import DeviceCurrentCard from '../components/DeviceCurrentCard';
 import ChartsDisplayContainer from '../components/ChartsDisplayContainer';
-import MapSidebar  from '../components/MapSidebar';
+import MapSidebar from '../components/MapSidebar';
 
 export default {
   name: 'UserDashboard',
   components: {
-    ChartsDisplayContainer, Map, LoadingOverlay, DeviceCurrentCard, MapSidebar
+    ChartsDisplayContainer, Map, LoadingOverlay, DeviceCurrentCard, MapSidebar,
   },
   data() {
     return {
@@ -111,15 +106,15 @@ export default {
       if (this.userHourly && this.selectedDevice) tmp = this.userHourly.find(e => e.device_id == this.selectedDevice.device_id);
       return tmp ? tmp.sensors : [];
     },
-    userDailySensors(){
+    userDailySensors() {
       let tmp = [];
       if (this.userDaily && this.selectedDevice) tmp = this.userDaily.find(e => e.device_id == this.selectedDevice.device_id);
       return tmp ? tmp.sensors : [];
-    }
+    },
   },
   methods: {
     ...mapActions('measures', ['getUserDevices', 'getUserDaily', 'getUserHourly', 'getUserCurrent']),
-    async pickDeviceFromMap(device){
+    async pickDeviceFromMap(device) {
       const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
       if (mapDevice) {
         this.selectedDevice = mapDevice;
@@ -128,16 +123,14 @@ export default {
         await this.getUserDaily(device.device_id);
       }
     },
-    pickDevice(device){
+    pickDevice(device) {
       const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
-      if (mapDevice) this.$refs.map.deviceGainedFocus(mapDevice)
+      if (mapDevice) this.$refs.map.deviceGainedFocus(mapDevice);
     },
-
-
-    hideMapSidebar(){
+    hideMapSidebar() {
       this.$refs.map.deviceLostFocus();
-      this.selectedDevice=null;
-    }
+      this.selectedDevice = null;
+    },
 
   },
 };
@@ -151,10 +144,6 @@ export default {
     width:100%;
   }
   .charts>.custom-chart{
-    flex-basis: 650px;
-    flex-grow:2;
-    margin: 0.5rem;
-    padding:0.5rem;
     min-height: 40vh;
   }
 

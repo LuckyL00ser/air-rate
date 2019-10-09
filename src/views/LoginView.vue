@@ -1,7 +1,7 @@
 <template>
       <v-container fill-height >
             <v-layout fill-height>
-              <v-flex class="my-10">
+              <v-flex align-self-center>
               <login />
               </v-flex>
             </v-layout>
@@ -9,11 +9,12 @@
 </template>
 
 <script>
-  import Login from "../components/Login.vue";
-  export default {
-    name: 'LoginView',
-    components: {Login}
-  };
+import Login from '../components/Login.vue';
+
+export default {
+  name: 'LoginView',
+  components: { Login },
+};
 </script>
 
 <style scoped>

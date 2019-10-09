@@ -1,6 +1,6 @@
 import Chart from 'chart.js';
 
-function commonChartsOptions (daily){
+function commonChartsOptions(daily) {
   return {
     maintainAspectRatio: false,
     scales: {
@@ -18,17 +18,17 @@ function commonChartsOptions (daily){
         type: 'time',
         scaleLabel: {
           display: true,
-          labelString: daily?'Dzień':'Godzina',
+          labelString: daily ? 'Dzień' : 'Godzina',
         },
 
         stacked: true,
         time: {
-          unit: daily? 'day' : 'minute',
-          unitStepSize: daily? 1 : 60,
-          displayFormats:{
-            minute: daily? 'DD-MM': 'hh:mm'
+          unit: daily ? 'day' : 'minute',
+          unitStepSize: daily ? 1 : 60,
+          displayFormats: {
+            minute: daily ? 'DD-MM' : 'hh:mm',
           },
-          tooltipFormat: 'YYYY-MM-DD, kk:mm'    //cosider adding 'ddd' at beggining - check moment.js lib localization options
+          tooltipFormat: 'YYYY-MM-DD, kk:mm', // cosider adding 'ddd' at beggining - check moment.js lib localization options
         },
       }],
     },
@@ -36,11 +36,9 @@ function commonChartsOptions (daily){
 }
 
 function pick(array, key) {
-
-   return array.map(item => item[key]);
+  return array.map(item => item[key]);
 }
 function drawPMsChart(data, container, daily) {
-
   const pm = new Chart(container.getContext('2d'), {
     type: 'line',
     data: {
@@ -67,9 +65,8 @@ function drawPMsChart(data, container, daily) {
     options: commonChartsOptions(daily),
   });
   return pm;
-
 }
-function drawTempChart(data, container,daily) {
+function drawTempChart(data, container, daily) {
   const tempChart = new Chart(container.getContext('2d'), {
     type: 'line',
     data: {
@@ -86,7 +83,7 @@ function drawTempChart(data, container,daily) {
   tempChart.options.scales.yAxes.labelString = '°C';
   return tempChart;
 }
-function drawHumidityChart(data, container,daily) {
+function drawHumidityChart(data, container, daily) {
   const humChart = new Chart(container.getContext('2d'), {
     type: 'line',
     data: {
@@ -103,7 +100,7 @@ function drawHumidityChart(data, container,daily) {
   humChart.options.scales.yAxes.labelString = '%';
   return humChart;
 }
-function drawPressureChart(data, container,daily) {
+function drawPressureChart(data, container, daily) {
   const pressChart = new Chart(container.getContext('2d'), {
     type: 'line',
     data: {
@@ -123,5 +120,5 @@ function drawPressureChart(data, container,daily) {
 }
 
 export {
-  drawHumidityChart, drawPMsChart, drawPressureChart, drawTempChart, pick
+  drawHumidityChart, drawPMsChart, drawPressureChart, drawTempChart, pick,
 };

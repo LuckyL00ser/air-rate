@@ -21,9 +21,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'UnknownPage',
-  };
+export default {
+  name: 'UnknownPage',
+};
 </script>
 
 <style scoped>

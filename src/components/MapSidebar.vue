@@ -12,35 +12,35 @@
 </template>
 
 <script>
-  //TODO: hide sidebar
-  export default {
-    name: 'MapSidebar',
-    data(){
-      return {
-        show: false,
+// TODO: hide sidebar
+export default {
+  name: 'MapSidebar',
+  data() {
+    return {
+      show: false,
+    };
+  },
+  methods: {
+    open() {
+      this.show = true;
+    },
+    close() {
+      this.show = false;
+      this.$emit('hide');
+    },
+  },
+  computed: {
+    getResponsiveWidth() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs': return '100%';
+        case 'sm': return '100%';
+        case 'md': return '60%';
+        case 'lg': return '40%';
+        case 'xl': return '40%';
       }
     },
-    methods: {
-      open(){
-        this.show=true;
-      },
-      close(){
-        this.show=false;
-        this.$emit('hide');
-      }
-    },
-    computed: {
-      getResponsiveWidth() {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return '100%';
-          case 'sm': return '100%';
-          case 'md': return '60%';
-          case 'lg': return '40%';
-          case 'xl': return '40%';
-        }
-      },
-    }
-  };
+  },
+};
 </script>
 
 <style scoped>
@@ -50,7 +50,7 @@
   position: absolute;
   top:0;
   right: -100%;
-  height: 100%;
+
 
 }
   #map-sidebar.expanded, #map-sidebar:focus{

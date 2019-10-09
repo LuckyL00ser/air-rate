@@ -43,14 +43,14 @@
 </template>
 
 <script >
-  export default {
-    name: 'Footer',
-    data(){
-      return {
-        currentYear: (new Date()).getFullYear(),
-      }
-    },
-  };
+export default {
+  name: 'Footer',
+  data() {
+    return {
+      currentYear: (new Date()).getFullYear(),
+    };
+  },
+};
 </script>
 
 <style scoped>

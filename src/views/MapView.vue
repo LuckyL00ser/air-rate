@@ -3,7 +3,7 @@
 
     <v-layout class=" col-12 pa-0 relative overflow-hidden" >
 
-      <map-sidebar ref="sidebar" class="pa-3 " @hide="hideDeviceCharts">
+      <map-sidebar ref="sidebar" class="pa-3"  @hide="hideDeviceCharts">
         <map-charts ref="charts"
 
                     :fetch-daily="getDailyMeasures"
@@ -22,6 +22,7 @@
            ref="map"
            :fetchDataFunction="getCurrentMeasures"
            :devices="$store.state.measures.current"
+           :locate-button="true"
            class="home-map"/>
 
     </v-layout>
@@ -67,7 +68,6 @@ export default {
       this.$refs.charts.fetchAndShowData(device);
     },
     hideDeviceCharts() {
-
       this.$refs.map.deviceLostFocus();
     },
   },

@@ -3,20 +3,19 @@ import axios from '../axios.config.js';
 // local storage manipulations
 function setAuthorizationToken(token) {
   if (token) {
-    axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+    axios.defaults.headers.common.Authorization = `Token ${token}`;
     axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
     localStorage.setItem('token', JSON.stringify(token));
   }
 }
 function removeAuthorizationToken() {
-  axios.defaults.headers.common['Authorization']= null;
+  axios.defaults.headers.common.Authorization = null;
   localStorage.removeItem('token');
 }
-function setUserData(user){
-  if(user)
-    localStorage.setItem('user',JSON.stringify(user));
+function setUserData(user) {
+  if (user) localStorage.setItem('user', JSON.stringify(user));
 }
-function removeUserData(){
+function removeUserData() {
   localStorage.removeItem('user');
 }
 
@@ -28,11 +27,11 @@ function removeUserData(){
 function getUserData() {
   return axios.get('/api/auth/user')
     .then(
-      (response)=>{
+      (response) => {
         setUserData(response.data);
         return response.data;
-      }
-    )
+      },
+    );
 }
 
 // USER posts
@@ -40,11 +39,10 @@ function login(_username, _password) {
   return axios.post('/api/auth/login', {
     username: _username,
     password: _password,
-  })
-
+  });
 }
 function logout() {
-   return axios.post('/api/auth/logout')
+  return axios.post('/api/auth/logout')
     .then(() => {
       removeAuthorizationToken();
       removeUserData();
@@ -53,12 +51,12 @@ function logout() {
 function register(user) {
   return axios.post('/api/auth/register', user)
     .then(
-      response=>{   //when registering user is automatically logged and gets its data and token in response
+      (response) => { // when registering user is automatically logged and gets its data and token in response
         setUserData(response.data.user);
-        setAuthorizationToken(response.data.token)
+        setAuthorizationToken(response.data.token);
         return response.data;
-      }
-    )
+      },
+    );
 }
 export {
   setAuthorizationToken,

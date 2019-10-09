@@ -32,31 +32,29 @@ const actions = {
       commit('fetchingFailed', 'current');
     }
   },
-  async getHourlyMeasures({ dispatch, commit },id) {
+  async getHourlyMeasures({ dispatch, commit }, id) {
     commit('startFetchingMeasure', 'hourly');
     try {
       const response = await measuresService.getHourly(id);
-      if(response.data.length==0)
-        throw Error('Brak dziennych pomiarów dla tego czujnika')
+      if (response.data.length == 0) throw Error('Brak dziennych pomiarów dla tego czujnika');
       commit('setHourlyMeasures', response.data[0]);
     } catch (e) {
       dispatch('alert/error', e, { root: true });
       commit('fetchingFailed', 'hourly');
     }
   },
-  async getDailyMeasures({ dispatch, commit },id) {
+  async getDailyMeasures({ dispatch, commit }, id) {
     commit('startFetchingMeasure', 'daily');
     try {
       const response = await measuresService.getDaily(id);
-      if(response.data.length==0)
-        throw Error('Brak dziennych pomiarów dla tego czujnika')
+      if (response.data.length == 0) throw Error('Brak dziennych pomiarów dla tego czujnika');
       commit('setDailyMeasures', response.data[0]);
     } catch (e) {
       dispatch('alert/error', e, { root: true });
       commit('fetchingFailed', 'daily');
     }
   },
-  async getUserHourly({ dispatch, commit },id) {
+  async getUserHourly({ dispatch, commit }, id) {
     commit('startFetchingMeasure', 'userHourly');
     try {
       const response = await measuresService.getUserHourly(id);
@@ -66,7 +64,7 @@ const actions = {
       commit('fetchingFailed', 'userHourly');
     }
   },
-  async getUserDaily({ dispatch, commit },id) {
+  async getUserDaily({ dispatch, commit }, id) {
     commit('startFetchingMeasure', 'userDaily');
     try {
       const response = await measuresService.getUserDaily(id);
@@ -76,10 +74,10 @@ const actions = {
       commit('fetchingFailed', 'userDaily');
     }
   },
-  async getUserDevices({ dispatch, commit,  rootState }) {
+  async getUserDevices({ dispatch, commit, rootState }) {
     commit('startFetchingMeasure', 'userDevices');
     try {
-      //rootState.user.userData.slug
+      // rootState.user.userData.slug
       const response = await measuresService.getUserDevices();
       commit('setUserDevices', response.data);
     } catch (e) {
@@ -90,7 +88,6 @@ const actions = {
   async getUserCurrent({ dispatch, commit }) {
     commit('startFetchingMeasure', 'userCurrent');
     try {
-
       const response = await measuresService.getUserCurrent();
       commit('setUserCurrent', response.data);
     } catch (e) {

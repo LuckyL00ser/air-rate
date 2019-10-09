@@ -11,7 +11,7 @@ const state = {
 };
 
 const actions = {
-  //TODO: change all actions into async/await instead of promises
+  // TODO: change all actions into async/await instead of promises
   async login({ dispatch, commit }, { username, password }) {
     commit('loggingIn');
     try {
@@ -26,9 +26,11 @@ const actions = {
       throw error;
     }
   },
-  logout({ commit }) {
+  logout({ dispatch, commit }) {
     userService.logout()
       .then(() => commit('loggedOut'));
+      userService.removeAuthorizationToken();
+      dispatch('alert/info','Wylogowano',{root: true});
   },
   register({ dispatch, commit }, user) {
     commit('registering');
@@ -42,7 +44,6 @@ const actions = {
       .catch(
         () => {
           commit('registrationFailed');
-
         },
       );
   },
@@ -88,9 +89,9 @@ const mutations = {
   },
   setUserData(state, user) {
     state.userData = user;
-    state.status= {
-      loggedIn: true
-    }
+    state.status = {
+      loggedIn: true,
+    };
   },
   removeUserData(state) {
     state.userData = null;

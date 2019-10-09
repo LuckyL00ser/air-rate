@@ -1,6 +1,10 @@
 <template>
  <div class="container--fluid flex-grow-1" id="main">
+     <v-btn v-if="locateButton" absolute  color="primary" bottom left fab class="mb-10" @click="locate">
+         <v-icon>fas fa-crosshairs</v-icon>
+     </v-btn>
       <div id="map-container" ></div>
+
  </div>
 </template>
 
@@ -16,7 +20,7 @@ import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
 
 export default {
   name: 'Map',
-  props: ['fetchDataFunction', 'devices'],
+  props: {fetchDataFunction: Function, devices: Array, locateButton: Boolean, autolocate: Boolean },
   data() {
     return {
       mapInstance: null,
@@ -24,7 +28,6 @@ export default {
       selectedRegionIcon: null,
       focusMarkerLayer: null,
       mobileDragOverlay: false,
-
     };
   },
   watch: {
@@ -43,7 +46,6 @@ export default {
       L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
       this.mapInstance = L.map('map-container',
         {
-
           gestureHandling: true,
           gestureHandlingOptions: {
             text: {
@@ -52,14 +54,6 @@ export default {
           },
         })
         .setView([50.0340021, 22.00450923], 13);
-
-      this.mapInstance.on('locationfound', (e) => {
-        this.$store.dispatch('alert/info', `Znajdujesz się w promieniu ${e.accuracy}m od tego miejsca`);
-      });
-      this.mapInstance.on('locationerror', (e) => {
-        this.$store.dispatch('alert/error', `Błąd lokalizacji: ${e.message}`);
-      });
-      this.mapInstance.locate({setView: true, maxZoom: 13})
       L.tileLayer(process.env.VUE_APP_MAPS_TILES_URL,
         {
           attribution: 'Map data &copy;<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -70,8 +64,11 @@ export default {
       this.circlesLayer = L.layerGroup();
       this.circlesLayer.addTo(this.mapInstance);
     },
-    centerOn(lat, lang) {
-      this.mapInstance.setView([lat, lang], 13);
+    centerOn(point) {
+      this.mapInstance.setView(point, 13);
+    },
+    centerMapInMiddleOfDevices(devices){
+      this.centerOn(this.mapCenter(devices));
     },
     refreshMeasures() {
       if (this.fetchDataFunction) {
@@ -94,7 +91,7 @@ export default {
     },
     deviceGainedFocus(device) {
       this.$emit('showDeviceCharts', device);
-      this.centerOn(device.latitude, device.longitude);
+      this.centerOn([device.latitude, device.longitude+this.targetOffset()]);
       if (this.focusMarkerLayer) this.focusMarkerLayer.remove();
       const tmp = L.marker([device.latitude, device.longitude], { icon: this.selectedRegionIcon });
       tmp.on('click', () => this.deviceGainedFocus(device));
@@ -110,6 +107,44 @@ export default {
         this.circlesLayer.addTo(this.mapInstance);
       }
       if (this.devices) this.devices.forEach(device => this.addRegion(device));
+    },
+    locate(){
+      if(this.$store){  //store is not allways available i.e. when using slug component
+        this.mapInstance.on('locationfound', (e) => {
+          this.$store.dispatch('alert/info', `Znajdujesz się w promieniu ${e.accuracy}m od tego miejsca`);
+        });
+        this.mapInstance.on('locationerror', (e) => {
+          this.$store.dispatch('alert/error', `Błąd lokalizacji: ${e.message}`);
+        });
+      }
+      this.mapInstance.locate({ setView: true, maxZoom: 13 });
+    },
+    targetOffset(){
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return 0;
+          case 'sm': return 0;
+          case 'md': return 0.04;
+          case 'lg': return 0.04;
+          case 'xl': return 0.04;
+        }
+    },
+    mapCenter(mapDevices) {
+
+      // calculates center point of devices on map
+      const sum = mapDevices.reduce(
+        (a, b) =>  {
+          return {
+            latitude: a.latitude + b.latitude,
+            longitude: a.longitude + b.longitude
+          }
+        },
+
+        {
+          latitude: 0,
+          longitude: 0,
+        },
+      );
+      return [sum.latitude / mapDevices.length, sum.longitude / mapDevices.length];
     },
 
   },

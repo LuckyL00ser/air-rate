@@ -1,5 +1,5 @@
-//konieczne poniewaz store importowal axiosa przed cala aplikacja a wykonuje on request
-//na samym starcie by pobrac dane uzytkownika z zapisana sesja
+// konieczne poniewaz store importowal axiosa przed cala aplikacja a wykonuje on request
+// na samym starcie by pobrac dane uzytkownika z zapisana sesja
 
 import axios from 'axios';
 

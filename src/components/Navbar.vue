@@ -37,12 +37,12 @@
       </span>
           <span v-else>
 
-        <a   @click="$emit('showLoginOverlay')">
+        <router-link   to="/login">
           Zaloguj się
           <v-icon  class="primary--text">
             fas fa-sign-in-alt
           </v-icon>
-      </a>
+      </router-link>
       </span>
         </div>
       </v-app-bar>
@@ -75,18 +75,21 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-        <template v-slot:append >
-          <v-btn v-if="status.loggedIn" class="col-12 accent" @click="$store.dispatch('user/logout')">
-            Wyloguj się
-          </v-btn>
-          <div v-else>
-            <v-btn class="primary col-12 my-2" to="/login">
-              Zaloguj się
+        <template v-slot:append>
+          <div  class="pa-3">
+            <v-btn v-if="status.loggedIn" class="col-12 accent" @click="logout">
+              Wyloguj się
             </v-btn>
-            <v-btn class="secondary col-12" to="/register">
-              Rejestracja
-            </v-btn>
+            <div v-else>
+              <v-btn class="primary col-12 my-2" to="/login">
+                Zaloguj się
+              </v-btn>
+              <v-btn class="secondary col-12" to="/register">
+                Rejestracja
+              </v-btn>
+            </div>
           </div>
+
         </template>
       </v-navigation-drawer>
     </div>

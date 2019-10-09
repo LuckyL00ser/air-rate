@@ -1,14 +1,16 @@
 <template>
-    <div class="charts-container">
-      <slot name="prepend">
-      </slot>
-      <chart v-for="(sensor, index) in groupedSensors"
-             :key="index" :sensors="sensor"
-             :daily="daily"
-             :class="chartClass"
-             @selected="selectedOption"
-      />
-    </div>
+    <v-container pa-0 ma-0 col-12>
+      <v-row>
+        <v-col v-for="(sensor, index) in groupedSensors" :key="index" :cols="$vuetify.breakpoint.mdAndUp? '6' : '12'">
+         <chart  :sensors="sensor"
+               :daily="daily"
+               :class="chartClass"
+               @selected="selectedOption"
+        />
+        </v-col>
+      </v-row>
+
+    </v-container>
 </template>
 
 <script>
@@ -21,19 +23,19 @@ export default {
   props: {
     sensors: {
       type: Array,
-      default: ()=>[],
+      default: () => [],
     },
     chartClass: {
       type: String,
       default: '',
-    }
+    },
   },
   data() {
     return {
-     // : [],
+      // : [],
       headerOptions: [
-        {name: 'godzinowe', value: 0},
-        {name: 'dzienne', value: 1},
+        { name: 'godzinowe', value: 0 },
+        { name: 'dzienne', value: 1 },
 
       ],
       daily: false,
@@ -41,13 +43,13 @@ export default {
   },
   computed: {
     groupedSensors() {
-     return helpers.groupByType(this.sensors);
+      return helpers.groupByType(this.sensors);
     },
   },
   methods: {
     selectedOption(option) {
       this.daily = !!option.value;
-      //TODO: emit data change request
+      // TODO: emit data change request
     },
   },
 };

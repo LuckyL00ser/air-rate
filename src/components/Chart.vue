@@ -21,14 +21,16 @@ import SelectList from './SelectList';
 export default {
   name: 'Chart',
   components: { SelectList },
-  props: { sensors: Array, daily: Boolean, showSelect: Boolean ,headerOptions: Array },  //array with sensors objects
-  data(){
+  props: {
+    sensors: Array, daily: Boolean, showSelect: Boolean, headerOptions: Array,
+  }, // array with sensors objects
+  data() {
     return {
       jsChart: null,
       anyMeasures: false,
       type: null,
       name: '',
-    }
+    };
   },
   watch: {
     sensors(newData) {
@@ -40,68 +42,63 @@ export default {
           type: 'time',
           scaleLabel: {
             display: true,
-            labelString: dailyChart?'Dzień':'Godzina',
+            labelString: dailyChart ? 'Dzień' : 'Godzina',
           },
           stacked: true,
           time: {
-            unit: dailyChart? 'day' : 'minute',
-            unitStepSize: dailyChart? 1 : 60,
-            displayFormats:{
-              minute: dailyChart? 'DD-MM': 'hh:mm'
+            unit: dailyChart ? 'day' : 'minute',
+            unitStepSize: dailyChart ? 1 : 60,
+            displayFormats: {
+              minute: dailyChart ? 'DD-MM' : 'hh:mm',
             },
-            tooltipFormat: 'YYYY-MM-DD, kk:mm'    //cosider adding 'ddd' at beggining - check moment.js lib localization options
+            tooltipFormat: 'YYYY-MM-DD, kk:mm', // cosider adding 'ddd' at beggining - check moment.js lib localization options
           },
         }],
         this.jsChart.update();
       }
     },
   },
-  beforeDestroy(){
-    if(this.jsChart)
-      this.jsChart.destroy();
+  beforeDestroy() {
+    if (this.jsChart) this.jsChart.destroy();
   },
-  mounted(){
+  mounted() {
     const matchedType = helpers.sensorType[this.sensors[0].name];
-    this.type= matchedType.type;
-    this.name= matchedType.commonName || matchedType.name;
+    this.type = matchedType.type;
+    this.name = matchedType.commonName || matchedType.name;
     this.showData(this.sensors);
   },
   methods: {
     showData(data) {
-
-      this.anyMeasures = data.reduce((a,b)=>{ return a || b.measures.length>0},false);
-      if(!this.anyMeasures)
-        return;
-      if(this.jsChart){ //chart already exists
+      this.anyMeasures = data.reduce((a, b) => a || b.measures.length > 0, false);
+      if (!this.anyMeasures) return;
+      if (this.jsChart) { // chart already exists
         this.updateData(data);
         return;
       }
 
       switch (this.type) {
         case 'PM':
-          this.jsChart = charts.drawPMsChart(data, this.$refs.chart,this.daily);
+          this.jsChart = charts.drawPMsChart(data, this.$refs.chart, this.daily);
           break;
         case 'temperature':
-          this.jsChart = charts.drawTempChart(data, this.$refs.chart,this.daily);
+          this.jsChart = charts.drawTempChart(data, this.$refs.chart, this.daily);
           break;
         case 'humidity':
-          this.jsChart = charts.drawHumidityChart(data, this.$refs.chart,this.daily);
+          this.jsChart = charts.drawHumidityChart(data, this.$refs.chart, this.daily);
           break;
         case 'pressure':
-          this.jsChart = charts.drawPressureChart(data, this.$refs.chart,this.daily);
+          this.jsChart = charts.drawPressureChart(data, this.$refs.chart, this.daily);
           break;
         default:
           break;
       }
     },
-    updateData(sensors){
-
+    updateData(sensors) {
       this.jsChart.data.labels = charts.pick(sensors[0].measures, 'created_at');
-        for( let i =0; i<sensors.length;i++)  //loop for grouped PM sensors
-          this.jsChart.data.datasets[i].data = charts.pick(sensors[i].measures, 'value');
-        this.jsChart.update();
+      for (let i = 0; i < sensors.length; i++) // loop for grouped PM sensors
+      { this.jsChart.data.datasets[i].data = charts.pick(sensors[i].measures, 'value'); }
+      this.jsChart.update();
     },
-
 
 
   },

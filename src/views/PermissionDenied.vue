@@ -21,16 +21,15 @@
         </v-flex>
 
 
-
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
-  export default {
-    name: 'PermissionDenied'
-  };
+export default {
+  name: 'PermissionDenied',
+};
 </script>
 
 <style scoped>
