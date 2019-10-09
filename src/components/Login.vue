@@ -1,9 +1,9 @@
 <template>
           <v-card light class="col-12 col-xl-3 col-md-5 col-sm-8 mx-auto my-auto">
-            <v-card-text class="text-left">
+            <v-card-text class="text-left" v-if="!status.loggedIn">
               <h1 class="greeting mt-2 mb-4 ">Logowanie</h1>
               <div class="d-flex">
-                <v-form ref="form" v-model="valid"  class="flex-grow-1 d-flex align-center" @submit="validate">
+                <v-form ref="form" v-model="valid"  class="flex-grow-1 d-flex align-center" @submit.prevent="validate">
                   <div class="flex-grow-1">
                     <v-text-field
                       v-model="username"
@@ -36,6 +36,10 @@
                 <small class="d-block mt-2">Nie masz jeszcze konta? <router-link to="/register">Zarejestruj się</router-link></small>
               </v-card-actions>
             </v-card-text>
+              <v-card-text v-else>
+                  <h1 class="my-3">Jesteś już zalogowany</h1>
+                  <router-link  to="/">Wróć na stronę główną</router-link>
+              </v-card-text>
           </v-card>
 
 
@@ -63,13 +67,14 @@ export default {
   },
   methods: {
     async validate() {
+
       if (this.$refs.form.validate()) {
         try {
           const response = await this.$store.dispatch('user/login', { username: this.username, password: this.password });
-          this.$emit('logged');
-          this.$router.push('/');
+           this.$emit('logged');
+           this.$router.push('/');
         } catch (error) {
-
+            console.log(error)
         }
       }
     },

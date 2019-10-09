@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" dark>
+  <v-app id="app" >
     <Navbar app @showLoginOverlay="showOverlay=true"/>
     <v-dialog
       v-model="showOverlay"

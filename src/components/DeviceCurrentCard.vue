@@ -1,5 +1,5 @@
 <template>
-  <v-card  class="fill-height d-flex flex-column pa-0 flex-grow-2 " v-if="selectedDevice">
+  <v-card  class="fill-height d-flex flex-column pa-0 flex-grow-2" v-if="selectedDevice">
       <v-card-text class="text-left pa-3 white--text flex-grow-1 weather-card">
         <div class="display-2"> {{selectedDevice.name}}</div>
         <v-divider  dark></v-divider>
@@ -7,7 +7,6 @@
           <span >{{selectedDevice.city}}</span>
           <span class="float-right">{{lastMeasure}}</span>
         </div>
-
         <h1 v-for="sensor in PMSensors" :key="sensor.name" class="mb-2" style="width:100%">
           <div  v-if="sensor.measures.length " >
              <span class="mr-3 font-weight-light" >
