@@ -1,2 +1,2 @@
-/slug /slug.html 200
+/slug/:slug /slug.html 200
 /*	/index.html 200

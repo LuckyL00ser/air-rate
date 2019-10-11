@@ -1,5 +1,43 @@
 module.exports = {
   productionSourceMap: false,
+  chainWebpack: (config) => {
+    // https://github.com/vuejs/vue-cli/issues/2381#issuecomment-425038367
+    const IS_VENDOR = /[\\/]node_modules[\\/]/;
+    config.optimization.splitChunks({
+      cacheGroups: {
+        vendors: {
+          name: 'chunk-vendors',
+          priority: -10,
+          chunks: 'initial',
+          minChunks: 2,
+          test: IS_VENDOR,
+          enforce: true,
+        },
+        index: {
+          name: 'chunk-index-vendors',
+          priority: -11,
+          chunks: chunk => chunk.name === 'index',
+          test: IS_VENDOR,
+          enforce: true,
+        },
+        slug: {
+          name: 'chunk-slug-vendors',
+          priority: -11,
+          chunks: chunk => chunk.name === 'slug',
+          test: IS_VENDOR,
+          enforce: true,
+        },
+        common: {
+          name: 'chunk-common',
+          priority: -20,
+          chunks: 'initial',
+          minChunks: 2,
+          reuseExistingChunk: true,
+          enforce: true,
+        },
+      },
+    });
+  },
   pages: {
     index: {
       // entry for the page
@@ -13,7 +51,7 @@ module.exports = {
       title: 'Index Page',
       // chunks to include on this page, by default includes
       // extracted common chunks and vendor chunks.
-      chunks: ['chunk-vendors', 'chunk-common', 'index'],
+      chunks: ['chunk-common', 'chunk-index-vendors', 'index'],
     },
     slug: {
       // entry for the page
@@ -27,15 +65,15 @@ module.exports = {
       title: 'Slug Page',
       // chunks to include on this page, by default includes
       // extracted common chunks and vendor chunks.
-      chunks: ['chunk-vendors', 'chunk-common', 'slug'],
+      chunks: ['chunk-common', 'chunk-slug-vendors', 'slug'],
     },
   },
-    devServer: {
-        historyApiFallback: {
-            rewrites: [
-                { from: /\/index/, to: '/index.html' },
-                { from: /\/slug/, to: '/slug.html' }
-            ]
-        }
-    }
+  devServer: {
+    historyApiFallback: {
+      rewrites: [
+        { from: /\/index/, to: '/index.html' },
+        { from: /\/slug/, to: '/slug.html' },
+      ],
+    },
+  },
 };
