@@ -1,3 +1,4 @@
+
 module.exports = {
   productionSourceMap: false,
   chainWebpack: (config) => {
@@ -5,14 +6,6 @@ module.exports = {
     const IS_VENDOR = /[\\/]node_modules[\\/]/;
     config.optimization.splitChunks({
       cacheGroups: {
-        vendors: {
-          name: 'chunk-vendors',
-          priority: -10,
-          chunks: 'initial',
-          minChunks: 2,
-          test: IS_VENDOR,
-          enforce: true,
-        },
         index: {
           name: 'chunk-index-vendors',
           priority: -11,
@@ -51,7 +44,7 @@ module.exports = {
       title: 'Index Page',
       // chunks to include on this page, by default includes
       // extracted common chunks and vendor chunks.
-      chunks: ['chunk-common', 'chunk-index-vendors', 'index'],
+      chunks: ['chunk-index-vendors', 'chunk-common', 'index'],
     },
     slug: {
       // entry for the page
@@ -65,7 +58,7 @@ module.exports = {
       title: 'Slug Page',
       // chunks to include on this page, by default includes
       // extracted common chunks and vendor chunks.
-      chunks: ['chunk-common', 'chunk-slug-vendors', 'slug'],
+      chunks: ['chunk-slug-vendors', 'chunk-common', 'slug'],
     },
   },
   devServer: {
