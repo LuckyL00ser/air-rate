@@ -28,28 +28,29 @@
   </v-app>
 </template>
 <script>
-  import Navbar from './components/Navbar.vue';
-  import Footer from './components/Footer.vue';
-  import Login from './components/Login.vue';
-  import {mapState} from 'vuex';
-  export default {
-    name: 'App',
-    components: {Navbar,Footer, Login},
-    data() {
-      return {
-        showOverlay: false,
-      }
-    },
-    computed:{
-      ...mapState('alert',{
-        show: state=>state.show,
-        message: state=>state.message,
-        type: state=>state.type,
-      })
-    },
+import { mapState } from 'vuex';
+import Navbar from './components/Navbar.vue';
+import Footer from './components/Footer.vue';
+import Login from './components/Login.vue';
+
+export default {
+  name: 'App',
+  components: { Navbar, Footer, Login },
+  data() {
+    return {
+      showOverlay: false,
+    };
+  },
+  computed: {
+    ...mapState('alert', {
+      show: state => state.show,
+      message: state => state.message,
+      type: state => state.type,
+    }),
+  },
 
 
-  }
+};
 </script>
 
 <style>

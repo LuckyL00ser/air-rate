@@ -1,9 +1,21 @@
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 
 module.exports = {
   productionSourceMap: false,
+  configureWebpack: {
+    plugins: [new BundleAnalyzerPlugin()],
+    resolve: {
+      alias: {
+        'chart.js': 'chart.js/dist/Chart.js',
+        moment: 'moment/src/moment',
+      },
+    },
+  },
   chainWebpack: (config) => {
     // https://github.com/vuejs/vue-cli/issues/2381#issuecomment-425038367
     const IS_VENDOR = /[\\/]node_modules[\\/]/;
+
     config.optimization.splitChunks({
       cacheGroups: {
         index: {

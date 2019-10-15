@@ -12,7 +12,7 @@ import MapView from './views/MapView.vue';
 Vue.use(Router);
 
 const router = new Router({
-    mode: 'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -75,18 +75,15 @@ const router = new Router({
 });
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => !record.meta.public)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
     if (!store.state.user.status.loggedIn) {
       next({
         path: '/login',
-        // query: { redirect: to.fullPath }
       });
     } else {
       next();
     }
   } else {
-    next(); // make sure to always call next()!
+    next();
   }
 });
 

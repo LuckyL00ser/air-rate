@@ -6,14 +6,13 @@
       </v-flex>
       <v-flex col-lg-3 col-12 col-md-4 col-sm-6>
         <v-card  class="fill-height d-flex flex-column">
-          <template name="append" >
+
             <v-card-title class="primary white--text">Twoje czujniki</v-card-title>
-          </template>
+
           <v-card-text class="flex-grow-1">
             <v-list v-if="userDevices && userDevices.length">
               <v-list-item-group v-model="selectListIndex" class="text-medium" color="secondary">
                 <v-list-item v-for="device in userDevices" :key="device.device_id" @click="pickDevice(device)">
-
                   <v-list-item-content>
                     {{device.name}}
                   </v-list-item-content>
@@ -28,7 +27,6 @@
                       <span v-if="device.visible_on_map">Inni użytkownicy widzą pomiary z Twojego czujnika</span>
                       <span v-else>Tylko Ty widzisz pomiary z tego czujnika</span>
                     </v-tooltip>
-
                   </v-list-item-action>
                 </v-list-item>
               </v-list-item-group>
@@ -38,19 +36,19 @@
               <i class="far fa-2x fa-sad-cry"></i>
             </div>
           </v-card-text>
-          <template name="prepend">
+
             <v-card-actions>
               <v-btn class="accent col-12">Zamów już dziś</v-btn>
             </v-card-actions>
-          </template>
+
           <loading-overlay :fetching="fetchingMeasures.userDevices" />
         </v-card>
 
       </v-flex>
       <v-flex fill-heigth col-12 col-md>
-        <v-card class="fill-height flex-grow-1">
+        <v-card class="fill-height flex-grow-1 overflow-hidden">
           <!--          <map-sidebar :devices="mapFilteredDevices" dark/>-->
-          <map-sidebar ref="sidebar"  @hide="hideMapSidebar">
+          <map-sidebar ref="sidebar" class="pa-md-3 pa-0" @hide="hideMapSidebar" >
             <device-current-card  :selected-device="selectedDevice" />
           </map-sidebar>
           <Map @showDeviceCharts="pickDeviceFromMap" :fetchDataFunction="getUserCurrent" :devices="mapDevices" ref="map" />
@@ -131,7 +129,6 @@ export default {
       this.$refs.map.deviceLostFocus();
       this.selectedDevice = null;
     },
-
   },
 };
 </script>

@@ -29,8 +29,8 @@ const actions = {
   logout({ dispatch, commit }) {
     userService.logout()
       .then(() => commit('loggedOut'));
-      userService.removeAuthorizationToken();
-      dispatch('alert/info','Wylogowano',{root: true});
+    userService.removeAuthorizationToken();
+    dispatch('alert/info', 'Wylogowano', { root: true });
   },
   register({ dispatch, commit }, user) {
     commit('registering');

@@ -54,9 +54,7 @@ export default {
   },
   computed: {
     ...mapState('measures', ['current', 'daily', 'hourly']),
-    computedLeft() {
-      return `${-this.scrollTop}px`;
-    },
+
   },
   methods: {
     ...mapActions('measures', ['getCurrentMeasures', 'getDailyMeasures', 'getHourlyMeasures']),
@@ -72,10 +70,11 @@ export default {
     },
   },
   created() {
-    window.addEventListener('scroll', this.handleScroll);
+    // this.$refs.map.centerMapInMiddleOfDevices(this.devices);
+    // window.addEventListener('scroll', this.handleScroll);
   },
   destroyed() {
-    window.removeEventListener('scroll', this.handleScroll);
+    // window.removeEventListener('scroll', this.handleScroll);
   },
 
 };

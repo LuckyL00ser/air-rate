@@ -1,6 +1,6 @@
 <template>
  <div class="container--fluid flex-grow-1" id="main">
-     <v-btn v-if="locateButton" absolute  color="primary" bottom left fab class="mb-10" @click="locate">
+     <v-btn v-if="locateButton" absolute  color="primary" bottom left fab class="mb-10 z-3"  @click="locate">
          <v-icon>fas fa-crosshairs</v-icon>
      </v-btn>
       <div id="map-container" ></div>
@@ -20,7 +20,9 @@ import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
 
 export default {
   name: 'Map',
-  props: {fetchDataFunction: Function, devices: Array, locateButton: Boolean, autolocate: Boolean },
+  props: {
+    fetchDataFunction: Function, devices: Array, locateButton: Boolean, autolocate: Boolean,
+  },
   data() {
     return {
       mapInstance: null,
@@ -67,7 +69,7 @@ export default {
     centerOn(point) {
       this.mapInstance.setView(point, 13);
     },
-    centerMapInMiddleOfDevices(devices){
+    centerMapInMiddleOfDevices(devices) {
       this.centerOn(this.mapCenter(devices));
     },
     refreshMeasures() {
@@ -85,13 +87,13 @@ export default {
         fillOpacity: 0.5,
         radius: 500,
       }).addTo(this.circlesLayer);
-      // circle.bindPopup(helpers.createMeasurePopup(device)); //disabled popup
+
 
       circle.on('click', () => this.deviceGainedFocus(device)); // centers map view on clicked point
     },
     deviceGainedFocus(device) {
       this.$emit('showDeviceCharts', device);
-      this.centerOn([device.latitude, device.longitude+this.targetOffset()]);
+      this.centerOn([device.latitude, device.longitude + this.targetOffset()]);
       if (this.focusMarkerLayer) this.focusMarkerLayer.remove();
       const tmp = L.marker([device.latitude, device.longitude], { icon: this.selectedRegionIcon });
       tmp.on('click', () => this.deviceGainedFocus(device));
@@ -108,8 +110,8 @@ export default {
       }
       if (this.devices) this.devices.forEach(device => this.addRegion(device));
     },
-    locate(){
-      if(this.$store){  //store is not allways available i.e. when using slug component
+    locate() {
+      if (this.$store) { // store is not allways available i.e. when using slug component
         this.mapInstance.on('locationfound', (e) => {
           this.$store.dispatch('alert/info', `Znajdujesz się w promieniu ${e.accuracy}m od tego miejsca`);
         });
@@ -119,25 +121,22 @@ export default {
       }
       this.mapInstance.locate({ setView: true, maxZoom: 13 });
     },
-    targetOffset(){
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return 0;
-          case 'sm': return 0;
-          case 'md': return 0.04;
-          case 'lg': return 0.04;
-          case 'xl': return 0.04;
-        }
+    targetOffset() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs': return 0;
+        case 'sm': return 0;
+        case 'md': return 0.04;
+        case 'lg': return 0.04;
+        case 'xl': return 0.04;
+      }
     },
     mapCenter(mapDevices) {
-
       // calculates center point of devices on map
       const sum = mapDevices.reduce(
-        (a, b) =>  {
-          return {
-            latitude: a.latitude + b.latitude,
-            longitude: a.longitude + b.longitude
-          }
-        },
+        (a, b) => ({
+          latitude: a.latitude + b.latitude,
+          longitude: a.longitude + b.longitude,
+        }),
 
         {
           latitude: 0,
@@ -183,5 +182,8 @@ export default {
     white-space: nowrap;
     width: auto !important;
   }
+    .z-3{
+        z-index: 3 !important;
+    }
 
 </style>

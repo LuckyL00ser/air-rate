@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import * as charts from '../services/charts.js';
+import * as charts from '../services/chartHelper.js';
 import * as helpers from '../services/helpers.js';
 import SelectList from './SelectList';
 

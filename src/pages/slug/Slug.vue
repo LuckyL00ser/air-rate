@@ -1,7 +1,7 @@
 <template>
   <v-app id="app" >
 
-       <v-card class="fill-height d-flex flex-column">
+       <v-card class="fill-height d-flex flex-column" >
            <template name="prepend">
                <a class="primary--text air-rate-attr"
                             href="https://www.airrate.pl" target="_blank">
@@ -9,7 +9,7 @@
                    <h3 class="font-weight-light d-inline-block vertical-middle">AirRate</h3>
                </a>
            </template>
-           <div class="fill-height position-relative">
+           <div class="fill-height position-relative overflow-hidden">
                <map-sidebar ref="sidebar" class="pa-3 " @hide="hideMapSidebar">
                    <device-current-card  :selected-device="selectedDevice" id="device-card"/>
                </map-sidebar>
@@ -18,8 +18,8 @@
                    Brak urządzeń dla tego użytkownika
                </v-overlay>
                <Map @showDeviceCharts="pickDeviceFromMap"
-                    :fetchDataFunction="getSlugDevices"
                     :devices="devices"
+                    :fetchDataFunction="getSlugDevices"
                     :locate-button="false"
                     ref="map"
                     class="fill-height"/>
@@ -48,37 +48,31 @@ export default {
       selectedDevice: null,
       loading: false,
       noDevices: false,
-
     };
-  },
-  mounted() {
-    //setInterval(this.getSlugDevices, 1000 * 60 * 5);// measure refresh every 5 min
   },
   methods: {
     async getSlugDevices() {
       if (this.$route.params.slug) {
         this.loading = true;
+
         try {
           const response = await axios.get(`/api/current/?for=${this.$route.params.slug}`);
           this.devices = response.data;
-          if(this.devices.length>0){
+          if (this.devices.length > 0) {
             this.$refs.map.centerMapInMiddleOfDevices(this.devices);
-            this.noDevices=false;
+            this.noDevices = false;
+          } else {
+            this.noDevices = true;
           }
-          else
-            this.noDevices=true;
         } catch (e) {
           console.error(e); // TODO: pomyslec jak sygnalizowac bledy w slugu
         }
         this.loading = false;
-      }
-      else
-      this.noDevices=true;
+      } else this.noDevices = true;
     },
     pickDeviceFromMap(device) {
-      const mapDevice = this.devices.find(e => e.device_id == device.device_id);
-      if (mapDevice) {
-        this.selectedDevice = mapDevice;
+      if (device) {
+        this.selectedDevice = device;
         this.$refs.sidebar.open();
       }
     },
@@ -115,6 +109,8 @@ a{
     .position-relative{
         position: relative;
     }
-
+.fill-height{
+    height: 100%;
+}
 
 </style>

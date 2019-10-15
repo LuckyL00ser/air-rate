@@ -1,28 +1,34 @@
 <template>
-  <v-container fill-height>
-    <v-card class="col-12 col-lg-6 mx-auto my-auto py-5">
-      <v-card-text class="px-sm-3 px-lg-12">
-        <h1 class="text--primary">
-          Błąd 404
-        </h1>
-        <v-divider class="my-4"></v-divider>
-        <div class="mb-4 text-left">
-               Podana strona nie istnieje<br>
-          Wróc na stronę główną.
-        </div>
+    <v-container fill-height >
+        <v-layout fill-height>
+            <v-flex align-self-center>
+                <subpage-card>
+                    <template v-slot:prepend>
+                        Błąd 404
+                  <v-divider ></v-divider></span>
+                    </template>
+                    <template v-slot:card-text>
+                        <div class="mb-4">
+                            Podana strona nie istnieje
+                        </div>
+                    </template>
+                    <template v-slot:append>
 
-          <v-btn  class="secondary" to="/" >
-            Strona główna
-          </v-btn>
-
-      </v-card-text>
-    </v-card>
-  </v-container>
+                        <v-btn class="secondary mb-4" to="/">
+                            Wróć na stronę główną
+                        </v-btn>
+                    </template>
+                </subpage-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
+    import SubpageCard from '../components/SubpageCard.vue';
 export default {
   name: 'UnknownPage',
+    components: {SubpageCard}
 };
 </script>
 
