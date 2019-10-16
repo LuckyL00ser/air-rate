@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import { user } from './user.store.js';
 import { alert } from './alert.store.js';
 import { measures } from './measures.store.js';
-const axios = () => import('../axios.config.js');
+import axios from '../axios.config.js';
 import * as userService from '../services/user.service';
 
 Vue.use(Vuex);

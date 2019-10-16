@@ -7,7 +7,7 @@ module.exports = {
     resolve: {
       alias: {
         'chart.js': 'chart.js/dist/Chart.js',
-        moment: 'moment/src/moment',
+       // moment: 'moment/src/moment',
       },
     },
   },

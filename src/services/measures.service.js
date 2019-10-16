@@ -1,4 +1,4 @@
-const axios = () => import('../axios.config.js');
+import axios from '../axios.config.js';
 
 function getDaily(id) {
   return axios.get(`/api/daily/?device=${id}`);

@@ -35,8 +35,7 @@ import DeviceCurrentCard from '@/components/DeviceCurrentCard.vue';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import Map from '../../components/Map';
 import MapSidebar from '../../components/MapSidebar';
-
-const axios = () => import('@/axios.config.js');
+import axios from '@/axios.config.js';
 
 export default {
   name: 'Slug',
