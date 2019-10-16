@@ -1,4 +1,4 @@
-import axios from '../axios.config.js'; // TODO:: check if this dependecy is correct for further dev
+const axios = () => import('../axios.config.js');
 
 function getDaily(id) {
   return axios.get(`/api/daily/?device=${id}`);

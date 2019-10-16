@@ -1,4 +1,4 @@
-import axios from '../axios.config.js';
+const axios = () => import('../axios.config.js');;
 
 // local storage manipulations
 function setAuthorizationToken(token) {

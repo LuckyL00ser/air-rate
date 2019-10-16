@@ -1,10 +1,9 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-
+//const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   productionSourceMap: false,
   configureWebpack: {
-    plugins: [new BundleAnalyzerPlugin()],
+    //plugins: [new BundleAnalyzerPlugin()],
     resolve: {
       alias: {
         'chart.js': 'chart.js/dist/Chart.js',

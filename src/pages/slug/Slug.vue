@@ -31,11 +31,12 @@
   </v-app>
 </template>
 <script>
-import axios from '@/axios.config.js';
 import DeviceCurrentCard from '@/components/DeviceCurrentCard.vue';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import Map from '../../components/Map';
 import MapSidebar from '../../components/MapSidebar';
+
+const axios = () => import('@/axios.config.js');
 
 export default {
   name: 'Slug',
