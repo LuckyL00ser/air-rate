@@ -18,40 +18,41 @@ import Chart from './Chart';
 import * as helpers from '../services/helpers.js';
 
 export default {
-  name: 'ChartsDisplayContainer',
-  components: { Chart },
-  props: {
-    sensors: {
-      type: Array,
-      default: () => [],
-    },
-    chartClass: {
-      type: String,
-      default: '',
-    },
-  },
-  data() {
-    return {
-      // : [],
-      headerOptions: [
-        { name: 'godzinowe', value: 0 },
-        { name: 'dzienne', value: 1 },
+	name: 'ChartsDisplayContainer',
+	components: { Chart },
+	props: {
+		sensors: {
+			type: Array,
+			default: () => [],
+		},
+		chartClass: {
+			type: String,
+			default: '',
+		},
+	},
+	data() {
+		return {
+			// : [],
+			headerOptions: [
+				{ name: 'godzinowe', value: 0 },
+				{ name: 'dzienne', value: 1 },
 
-      ],
-      daily: false,
-    };
-  },
-  computed: {
-    groupedSensors() {
-      return helpers.groupByType(this.sensors);
-    },
-  },
-  methods: {
-    selectedOption(option) {
-      this.daily = !!option.value;
-      // TODO: emit data change request
-    },
-  },
+			],
+			daily: false,
+		};
+	},
+	computed: {
+		groupedSensors() {
+			return helpers.groupByType(this.sensors);
+		},
+	},
+	methods: {
+		selectedOption(option) {
+			this.daily = !!option.value; // casts from integer to boolean
+			// TODO: emit data change request
+           this.$emit('changedTimeBounds', option);
+		},
+	},
 };
 </script>
 

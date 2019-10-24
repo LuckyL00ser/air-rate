@@ -20,9 +20,9 @@
 </template>
 
 <script>
-    export default {
-        name: "SubpageCard"
-    }
+export default {
+	name: 'SubpageCard',
+};
 </script>
 
 <style scoped>

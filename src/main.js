@@ -9,11 +9,11 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 
 Vue.config.productionTip = false;
 new Vue({
-  router,
-  store,
-  vuetify,
-  beforeCreate() {
-    this.$store.dispatch('initStore');
-  },
-  render: h => h(App),
+	router,
+	store,
+	vuetify,
+	beforeCreate() {
+		this.$store.dispatch('initStore');
+	},
+	render: h => h(App),
 }).$mount('#app');

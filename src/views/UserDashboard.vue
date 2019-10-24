@@ -75,61 +75,61 @@ import ChartsDisplayContainer from '../components/ChartsDisplayContainer';
 import MapSidebar from '../components/MapSidebar';
 
 export default {
-  name: 'UserDashboard',
-  components: {
-    ChartsDisplayContainer, Map, LoadingOverlay, DeviceCurrentCard, MapSidebar,
-  },
-  data() {
-    return {
-      selectListIndex: null,
-      mapDevices: [],
-      selectedDevice: null,
-      chartsSensors: [],
-      daily: false,
-    };
-  },
-  watch: {
-    userCurrent(newData) {
-      this.mapDevices = newData;
-    },
-  },
-  async mounted() {
-    this.getUserDevices();
-  },
-  computed: {
-    ...mapState('user', ['status', 'userData']),
-    ...mapState('measures', ['userDevices', 'fetchingMeasures', 'userCurrent', 'userHourly', 'userDaily']),
-    userHourlySensors() {
-      let tmp = [];
-      if (this.userHourly && this.selectedDevice) tmp = this.userHourly.find(e => e.device_id == this.selectedDevice.device_id);
-      return tmp ? tmp.sensors : [];
-    },
-    userDailySensors() {
-      let tmp = [];
-      if (this.userDaily && this.selectedDevice) tmp = this.userDaily.find(e => e.device_id == this.selectedDevice.device_id);
-      return tmp ? tmp.sensors : [];
-    },
-  },
-  methods: {
-    ...mapActions('measures', ['getUserDevices', 'getUserDaily', 'getUserHourly', 'getUserCurrent']),
-    async pickDeviceFromMap(device) {
-      const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
-      if (mapDevice) {
-        this.selectedDevice = mapDevice;
-        this.$refs.sidebar.open();
-        await this.getUserHourly(device.device_id);
-        await this.getUserDaily(device.device_id);
-      }
-    },
-    pickDevice(device) {
-      const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
-      if (mapDevice) this.$refs.map.deviceGainedFocus(mapDevice);
-    },
-    hideMapSidebar() {
-      this.$refs.map.deviceLostFocus();
-      this.selectedDevice = null;
-    },
-  },
+	name: 'UserDashboard',
+	components: {
+		ChartsDisplayContainer, Map, LoadingOverlay, DeviceCurrentCard, MapSidebar,
+	},
+	data() {
+		return {
+			selectListIndex: null,
+			mapDevices: [],
+			selectedDevice: null,
+			chartsSensors: [],
+			daily: false,
+		};
+	},
+	watch: {
+		userCurrent(newData) {
+			this.mapDevices = newData;
+		},
+	},
+	async mounted() {
+		this.getUserDevices();
+	},
+	computed: {
+		...mapState('user', ['status', 'userData']),
+		...mapState('measures', ['userDevices', 'fetchingMeasures', 'userCurrent', 'userHourly', 'userDaily']),
+		userHourlySensors() {
+			let tmp = [];
+			if (this.userHourly && this.selectedDevice) tmp = this.userHourly.find(e => e.device_id == this.selectedDevice.device_id);
+			return tmp ? tmp.sensors : [];
+		},
+		userDailySensors() {
+			let tmp = [];
+			if (this.userDaily && this.selectedDevice) tmp = this.userDaily.find(e => e.device_id == this.selectedDevice.device_id);
+			return tmp ? tmp.sensors : [];
+		},
+	},
+	methods: {
+		...mapActions('measures', ['getUserDevices', 'getUserDaily', 'getUserHourly', 'getUserCurrent']),
+		async pickDeviceFromMap(device) {
+			const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
+			if (mapDevice) {
+				this.selectedDevice = mapDevice;
+				this.$refs.sidebar.open();
+				await this.getUserHourly(device.device_id);
+				await this.getUserDaily(device.device_id);
+			}
+		},
+		pickDevice(device) {
+			const mapDevice = this.userCurrent.find(e => e.device_id == device.device_id);
+			if (mapDevice) this.$refs.map.deviceGainedFocus(mapDevice);
+		},
+		hideMapSidebar() {
+			this.$refs.map.deviceLostFocus();
+			this.selectedDevice = null;
+		},
+	},
 };
 </script>
 

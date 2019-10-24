@@ -5,12 +5,12 @@ import Slug from './Slug.vue';
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
-  base: '/slug/',
-  routes: [
-    {
-      path: '/:slug',
-      component: Slug,
-    },
-  ],
+	mode: 'history',
+	base: '/slug/',
+	routes: [
+		{
+			path: '/:slug',
+			component: Slug,
+		},
+	],
 });

@@ -11,10 +11,10 @@
 
 <script>
 export default {
-  name: 'LoadingOverlay',
-  props: {
-    fetching: Boolean,
-  },
+	name: 'LoadingOverlay',
+	props: {
+		fetching: Boolean,
+	},
 };
 </script>
 

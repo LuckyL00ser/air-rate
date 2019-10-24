@@ -25,10 +25,11 @@
 </template>
 
 <script>
-    import SubpageCard from '../components/SubpageCard.vue';
+import SubpageCard from '../components/SubpageCard.vue';
+
 export default {
-  name: 'UnknownPage',
-    components: {SubpageCard}
+	name: 'UnknownPage',
+	components: { SubpageCard },
 };
 </script>
 

@@ -38,50 +38,50 @@ import MapSidebar from '../../components/MapSidebar';
 import axios from '@/axios.config.js';
 
 export default {
-  name: 'Slug',
-  components: {
-    DeviceCurrentCard, LoadingOverlay, Map, MapSidebar,
-  },
-  data() {
-    return {
-      devices: [],
-      selectedDevice: null,
-      loading: false,
-      noDevices: false,
-    };
-  },
-  methods: {
-    async getSlugDevices() {
-      if (this.$route.params.slug) {
-        this.loading = true;
+	name: 'Slug',
+	components: {
+		DeviceCurrentCard, LoadingOverlay, Map, MapSidebar,
+	},
+	data() {
+		return {
+			devices: [],
+			selectedDevice: null,
+			loading: false,
+			noDevices: false,
+		};
+	},
+	methods: {
+		async getSlugDevices() {
+			if (this.$route.params.slug) {
+				this.loading = true;
 
-        try {
-          const response = await axios.get(`/api/current/?for=${this.$route.params.slug}`);
-          this.devices = response.data;
-          if (this.devices.length > 0) {
-            this.$refs.map.centerMapInMiddleOfDevices(this.devices);
-            this.noDevices = false;
-          } else {
-            this.noDevices = true;
-          }
-        } catch (e) {
-          console.error(e); // TODO: pomyslec jak sygnalizowac bledy w slugu
-        }
-        this.loading = false;
-      } else this.noDevices = true;
-    },
-    pickDeviceFromMap(device) {
-      if (device) {
-        this.selectedDevice = device;
-        this.$refs.sidebar.open();
-      }
-    },
-    hideMapSidebar() {
-      this.$refs.map.deviceLostFocus();
-      this.selectedDevice = null;
-    },
+				try {
+					const response = await axios.get(`/api/current/?for=${this.$route.params.slug}`);
+					this.devices = response.data;
+					if (this.devices.length > 0) {
+						this.$refs.map.centerMapInMiddleOfDevices(this.devices);
+						this.noDevices = false;
+					} else {
+						this.noDevices = true;
+					}
+				} catch (e) {
+					console.error(e); // TODO: pomyslec jak sygnalizowac bledy w slugu
+				}
+				this.loading = false;
+			} else this.noDevices = true;
+		},
+		pickDeviceFromMap(device) {
+			if (device) {
+				this.selectedDevice = device;
+				this.$refs.sidebar.open();
+			}
+		},
+		hideMapSidebar() {
+			this.$refs.map.deviceLostFocus();
+			this.selectedDevice = null;
+		},
 
-  },
+	},
 };
 </script>
 

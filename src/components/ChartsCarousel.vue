@@ -40,13 +40,13 @@
 import ChartsDisplayContainer from './ChartsDisplayContainer.vue';
 
 export default {
-  name: 'ChartsCarousel',
-  mixins: [ChartsDisplayContainer],
-  data() {
-    return {
-      currentSlide: 0,
-    };
-  },
+	name: 'ChartsCarousel',
+	mixins: [ChartsDisplayContainer],
+	data() {
+		return {
+			currentSlide: 0,
+		};
+	},
 
 
 };

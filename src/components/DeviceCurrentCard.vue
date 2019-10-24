@@ -3,7 +3,7 @@
       <v-card-text class="text-left pa-3 white--text flex-grow-1 weather-card">
         <div class="display-2"> {{selectedDevice.name}}</div>
         <v-divider  dark></v-divider>
-        <div class="mb-3 text--primary">
+        <div class="mb-3 text--secondary">
           <span >{{selectedDevice.city}}</span>
           <span class="float-right">{{lastMeasure}}</span>
         </div>
@@ -44,39 +44,39 @@
 import * as helpers from '../services/helpers.js';
 // TODO: current measures show the oldest measures
 export default {
-  name: 'DeviceCurrentCard',
-  props: {
-    selectedDevice: Object,
-  },
-  computed: {
-    PMSensors() {
-      return this.selectedDevice.sensors.filter(e => helpers.isPMSensor(e));
-    },
-    notPMSensors() {
-      return this.selectedDevice.sensors.filter(e => !helpers.isPMSensor(e));
-    },
-    sensorTypeInfo() {
-      return helpers.sensorType;
-    },
-    lastMeasure() {
-      if (this.selectedDevice && this.selectedDevice.sensors && this.selectedDevice.sensors.length) {
-        const tmp = new Date(this.selectedDevice.sensors[0].measures[this.selectedDevice.sensors[0].measures.length - 1].created_at);
-        return `${tmp.toLocaleTimeString('pl-PL')}/ ${tmp.toLocaleDateString('pl-PL')}`;
-      }
-      return 'brak';
-    },
-  },
-  methods: {
-    sensorColor(name, value) {
-      return helpers.unifyValueAndGetColor(name, value);
-    },
-    isPMSensor(sensor) {
-      return helpers.isPMSensor(sensor);
-    },
-    roundMeasure(value) {
-      return Math.round(value * 100) / 100;
-    },
-  },
+	name: 'DeviceCurrentCard',
+	props: {
+		selectedDevice: Object,
+	},
+	computed: {
+		PMSensors() {
+			return this.selectedDevice.sensors.filter(e => helpers.isPMSensor(e));
+		},
+		notPMSensors() {
+			return this.selectedDevice.sensors.filter(e => !helpers.isPMSensor(e));
+		},
+		sensorTypeInfo() {
+			return helpers.sensorType;
+		},
+		lastMeasure() {
+			if (this.selectedDevice && this.selectedDevice.sensors && this.selectedDevice.sensors.length) {
+				const tmp = new Date(this.selectedDevice.sensors[0].measures[this.selectedDevice.sensors[0].measures.length - 1].created_at);
+				return `${tmp.toLocaleTimeString('pl-PL')}/ ${tmp.toLocaleDateString('pl-PL')}`;
+			}
+			return 'brak';
+		},
+	},
+	methods: {
+		sensorColor(name, value) {
+			return helpers.unifyValueAndGetColor(name, value);
+		},
+		isPMSensor(sensor) {
+			return helpers.isPMSensor(sensor);
+		},
+		roundMeasure(value) {
+			return Math.round(value * 100) / 100;
+		},
+	},
 };
 </script>
 

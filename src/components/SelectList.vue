@@ -26,25 +26,25 @@
 
 <script>
 export default {
-  name: 'SelectList',
-  props: { options: Array },
-  data() {
-    return {
-      selectedOption: {
-        name: '',
-        value: null,
-      },
-    };
-  },
-  mounted() {
-    if (this.options) this.selectedOption = this.options[0];
-  },
-  methods: {
-    selectOption(option) {
-      this.selectedOption = option;
-      this.$emit('selected', option);
-    },
-  },
+	name: 'SelectList',
+	props: { options: Array },
+	data() {
+		return {
+			selectedOption: {
+				name: '',
+				value: null,
+			},
+		};
+	},
+	mounted() {
+		if (this.options) this.selectedOption = this.options[0];
+	},
+	methods: {
+		selectOption(option) {
+			this.selectedOption = option;
+			this.$emit('selected', option);
+		},
+	},
 };
 </script>
 

@@ -67,40 +67,40 @@
 
 <script>
 import { mapState } from 'vuex';
-import SubpageCard from "../components/SubpageCard";
+import SubpageCard from '../components/SubpageCard';
 
 export default {
-  name: 'Register',
-    components: {SubpageCard},
-    data() {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      passwordRepeated: '',
-      showPassword: false,
-      valid: false,
-      requiredRule: value => !!value || 'Pole wymagane',
-      usernameRule: value => value.length > 5 || 'Zbyt krótka nazwa użytkownika',
-      passwordRule: value => (value == this.password && this.password == this.passwordRepeated) || 'Podane hasła różnią się',
-      emailRule: value => /.+@.+\..+/.test(value) || 'Niepoprawny e-mail',
-    };
-  },
-  computed: {
-    ...mapState('user', ['status']),
-  },
-  methods: {
-    async validate() {
-      if (this.$refs.form.validate()) {
-        try {
-          const response = await this.$store.dispatch('user/register', { username: this.username, email: this.email, password: this.password });
-          this.$router.push('/');
-        } catch (error) {
-          console.error(error); // TODO delete this
-        }
-      }
-    },
-  },
+	name: 'Register',
+	components: { SubpageCard },
+	data() {
+		return {
+			username: '',
+			email: '',
+			password: '',
+			passwordRepeated: '',
+			showPassword: false,
+			valid: false,
+			requiredRule: value => !!value || 'Pole wymagane',
+			usernameRule: value => value.length > 5 || 'Zbyt krótka nazwa użytkownika',
+			passwordRule: value => (value == this.password && this.password == this.passwordRepeated) || 'Podane hasła różnią się',
+			emailRule: value => /.+@.+\..+/.test(value) || 'Niepoprawny e-mail',
+		};
+	},
+	computed: {
+		...mapState('user', ['status']),
+	},
+	methods: {
+		async validate() {
+			if (this.$refs.form.validate()) {
+				try {
+					const response = await this.$store.dispatch('user/register', { username: this.username, email: this.email, password: this.password });
+					this.$router.push('/');
+				} catch (error) {
+					console.error(error); // TODO delete this
+				}
+			}
+		},
+	},
 };
 </script>
 

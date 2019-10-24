@@ -3,7 +3,7 @@
 
     <v-layout class=" col-12 pa-0 relative overflow-hidden" >
 
-      <map-sidebar ref="sidebar" class="pa-3"  @hide="hideDeviceCharts">
+      <map-sidebar ref="sidebar" class="pa-3" :scrollable="true"  @hide="hideDeviceCharts">
         <map-charts ref="charts"
 
                     :fetch-daily="getDailyMeasures"
@@ -39,43 +39,43 @@ import MapSidebar from '../components/MapSidebar.vue';
 import DeviceCurrentCard from '../components/DeviceCurrentCard.vue';
 
 export default {
-  name: 'MapView',
-  components: {
-    DeviceCurrentCard,
-    Map,
-    MapCharts,
-    MapSidebar,
-  },
-  data() {
-    return {
-      scrollTop: 0,
+	name: 'MapView',
+	components: {
+		DeviceCurrentCard,
+		Map,
+		MapCharts,
+		MapSidebar,
+	},
+	data() {
+		return {
+			scrollTop: 0,
 
-    };
-  },
-  computed: {
-    ...mapState('measures', ['current', 'daily', 'hourly']),
+		};
+	},
+	computed: {
+		...mapState('measures', ['current', 'daily', 'hourly']),
 
-  },
-  methods: {
-    ...mapActions('measures', ['getCurrentMeasures', 'getDailyMeasures', 'getHourlyMeasures']),
-    handleScroll() {
-      this.scrollTop = 5 * window.innerWidth * window.scrollY / window.innerHeight;
-    },
-    showDeviceCharts(device) {
-      this.$refs.sidebar.open();
-      this.$refs.charts.fetchAndShowData(device);
-    },
-    hideDeviceCharts() {
-      this.$refs.map.deviceLostFocus();
-    },
-  },
-  created() {
-    // this.$refs.map.centerMapInMiddleOfDevices(this.devices);
-    // window.addEventListener('scroll', this.handleScroll);
-  },
-  destroyed() {
-    // window.removeEventListener('scroll', this.handleScroll);
-  },
+	},
+	methods: {
+		...mapActions('measures', ['getCurrentMeasures', 'getDailyMeasures', 'getHourlyMeasures']),
+		handleScroll() {
+			this.scrollTop = 5 * window.innerWidth * window.scrollY / window.innerHeight;
+		},
+		showDeviceCharts(device) {
+			this.$refs.sidebar.open();
+			this.$refs.charts.fetchAndShowData(device);
+		},
+		hideDeviceCharts() {
+			this.$refs.map.deviceLostFocus();
+		},
+	},
+	created() {
+		// this.$refs.map.centerMapInMiddleOfDevices(this.devices);
+		// window.addEventListener('scroll', this.handleScroll);
+	},
+	destroyed() {
+		// window.removeEventListener('scroll', this.handleScroll);
+	},
 
 };
 </script>

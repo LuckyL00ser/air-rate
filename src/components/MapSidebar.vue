@@ -1,6 +1,6 @@
 <template>
-  <div id="map-sidebar" :class="{'expanded':show}" :style="{'width': getResponsiveWidth}">
-    <v-btn fab color="accent" class="mr-n3 mt-8" absolute top right @click="close">
+  <div id="map-sidebar" :class="{'expanded':show, 'scrollable':enableScroll}" :style="{'width': getResponsiveWidth}">
+    <v-btn fab color="accent" class="mr-n3 mt-8 z-index" absolute top right @click="close">
       <v-icon>
         fas fa-times
       </v-icon>
@@ -12,34 +12,38 @@
 </template>
 
 <script>
-// TODO: hide sidebar
+
 export default {
-  name: 'MapSidebar',
-  data() {
-    return {
-      show: false,
-    };
-  },
-  methods: {
-    open() {
-      this.show = true;
-    },
-    close() {
-      this.show = false;
-      this.$emit('hide');
-    },
-  },
-  computed: {
-    getResponsiveWidth() {
-      switch (this.$vuetify.breakpoint.name) {
-        case 'xs': return '100%';
-        case 'sm': return '100%';
-        case 'md': return '60%';
-        case 'lg': return '40%';
-        case 'xl': return '40%';
-      }
-    },
-  },
+	name: 'MapSidebar',
+	props: { scrollable: Boolean },
+	data() {
+		return {
+			show: false,
+		};
+	},
+	methods: {
+		open() {
+			this.show = true;
+		},
+		close() {
+			this.show = false;
+			this.$emit('hide');
+		},
+	},
+	computed: {
+		getResponsiveWidth() {
+			switch (this.$vuetify.breakpoint.name) {
+			case 'xs': return '100%';
+			case 'sm': return '100%';
+			case 'md': return '60%';
+			case 'lg': return '40%';
+			case 'xl': return '40%';
+			}
+		},
+		enableScroll() {
+		  return this.$props.scrollable;
+		},
+	},
 };
 </script>
 
@@ -50,10 +54,15 @@ export default {
   position: absolute;
   top:0;
   right: -100%;
-
-
+    height: 100%;
+}
+.scrollable{
+    overflow-y: scroll;
 }
   #map-sidebar.expanded, #map-sidebar:focus{
     right:0 !important;
   }
+    .z-index{
+        z-index: 6
+    }
 </style>

@@ -103,17 +103,17 @@ import { mapState } from 'vuex';
 import Login from './Login';
 
 export default {
-  name: 'Navbar',
-  data() {
-    return {
-      drawer: false,
-      nav: [
-        {
-          name: 'Mapa zanieczyszczeń',
-          icon: 'fas fa-map-marked-alt',
-          to: '/',
-        },
-        /* {
+	name: 'Navbar',
+	data() {
+		return {
+			drawer: false,
+			nav: [
+				{
+					name: 'Mapa zanieczyszczeń',
+					icon: 'fas fa-map-marked-alt',
+					to: '/',
+				},
+				/* {
           name: 'Produkty',
           icon: 'fas fa-shopping-cart',
           to: '/products'
@@ -129,19 +129,19 @@ export default {
           to: '/rules'
         }, */
 
-      ],
+			],
 
-    };
-  },
-  computed: {
-    ...mapState('user', ['status', 'userData']),
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('user/logout');
-      this.$router.push('/');
-    },
-  },
+		};
+	},
+	computed: {
+		...mapState('user', ['status', 'userData']),
+	},
+	methods: {
+		logout() {
+			this.$store.dispatch('user/logout');
+			this.$router.push('/');
+		},
+	},
 
 
 };

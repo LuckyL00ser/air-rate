@@ -32,10 +32,11 @@
 </template>
 
 <script>
-    import SubpageCard from '../components/SubpageCard.vue'
+import SubpageCard from '../components/SubpageCard.vue';
+
 export default {
-  name: 'PermissionDenied',
-    components: {SubpageCard}
+	name: 'PermissionDenied',
+	components: { SubpageCard },
 };
 </script>
 

@@ -7,7 +7,7 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 
 Vue.config.productionTip = false;
 new Vue({
-  router,
-  vuetify,
-  render: h => h(Slug),
+	router,
+	vuetify,
+	render: h => h(Slug),
 }).$mount('#app');
